@@ -82,8 +82,8 @@ const detailCta = computed(() =>
             <PlaceholderGraphic :tone="product.tone" :label="product.nameEn" />
           </div>
           <div class="detail-visual__caption">
-            <span>占位视觉</span>
-            <span>自制 SVG · 不使用外部素材</span>
+            <span>模块示意图</span>
+            <span>基于现场链路的抽象表达</span>
           </div>
         </div>
       </div>
@@ -126,7 +126,7 @@ const detailCta = computed(() =>
             <ul class="use-case-list">
               <li v-for="useCase in product.useCases" :key="useCase">{{ useCase }}</li>
             </ul>
-            <p class="spec-panel__note">示例描述，仅用于演示详情页的信息组织。</p>
+            <p class="spec-panel__note">具体能力范围以现场评估与实施方案为准。</p>
           </div>
         </aside>
       </div>
@@ -171,7 +171,7 @@ const detailCta = computed(() =>
       <span class="eyebrow">NOT FOUND</span>
       <h1 class="missing__title">没有找到这个产品</h1>
       <p class="missing__desc">
-        链接中的产品标识可能已经变更，或者该产品尚未加入示例数据。你可以返回列表重新选择。
+        链接中的产品标识可能已经变更，或该模块已调整到其他分类。你可以返回列表重新选择。
       </p>
       <div class="missing__actions">
         <RouterLink class="btn btn--primary" to="/products">返回产品列表</RouterLink>
@@ -297,6 +297,12 @@ const detailCta = computed(() =>
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: var(--surface);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.highlight-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-sm);
 }
 
 .highlight-card__index {

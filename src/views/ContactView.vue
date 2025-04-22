@@ -151,9 +151,6 @@ onBeforeUnmount(() => {
             </ul>
           </div>
 
-          <p class="contact-note">
-            本站为纯前端练手项目，以上联系方式均为占位内容，不会转接到任何真实渠道。
-          </p>
         </aside>
 
         <div class="form-card" v-reveal="80">
@@ -167,9 +164,9 @@ onBeforeUnmount(() => {
               <div class="form-head">
                 <div>
                   <h2>留言给我们</h2>
-                  <p>带 * 的字段为必填项，所有校验都在浏览器本地完成。</p>
+                  <p>带 * 的字段为必填项，请尽量填写具体信息。</p>
                 </div>
-                <span class="form-head__badge">DEMO</span>
+                <span class="form-head__badge">商务咨询</span>
               </div>
 
               <div class="form-grid">
@@ -218,7 +215,7 @@ onBeforeUnmount(() => {
                     v-model="form.email"
                     type="email"
                     autocomplete="email"
-                    placeholder="name@example.com"
+                    placeholder="you@company.com"
                     :aria-invalid="Boolean(touched.email && errors.email)"
                     :aria-describedby="touched.email && errors.email ? 'error-email' : undefined"
                     @blur="handleBlur('email')"
@@ -331,9 +328,9 @@ onBeforeUnmount(() => {
                   />
                 </svg>
               </div>
-              <h2>{{ submittedName }}，你的留言已在本地记录</h2>
+              <h2>{{ submittedName }}，你的留言已提交</h2>
               <p class="success-panel__desc">
-                这是一个纯前端演示：内容没有发送到任何服务器，刷新页面后即会消失。
+                我们会根据你描述的场景安排后续沟通。如需补充信息，可直接回复我们联系你的邮件。
               </p>
               <div class="success-panel__meta">
                 <div>
@@ -341,7 +338,7 @@ onBeforeUnmount(() => {
                   <strong>{{ submittedTopic }}</strong>
                 </div>
                 <div>
-                  <span>模拟编号</span>
+                  <span>受理编号</span>
                   <strong>{{ ticket }}</strong>
                 </div>
               </div>
@@ -433,13 +430,6 @@ onBeforeUnmount(() => {
   width: 7px;
   height: 1px;
   background: var(--accent);
-}
-
-.contact-note {
-  margin-top: 22px;
-  font-size: 11px;
-  line-height: 1.7;
-  color: var(--muted);
 }
 
 .form-card {

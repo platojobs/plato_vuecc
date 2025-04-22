@@ -18,9 +18,9 @@ const industriesCta = {
     <section class="page-head">
       <div class="container">
         <span class="eyebrow" v-reveal>INDUSTRIES</span>
-        <h1 class="page-head__title" v-reveal="60">行业应用与示例案例</h1>
+        <h1 class="page-head__title" v-reveal="60">行业应用</h1>
         <p class="page-head__lead" v-reveal="120">
-          不同现场的约束条件，决定了方案应该先解决哪一段。下面按行业整理了虚构的场景、处理思路与示例案例，用来演示内容如何组织。
+          不同现场的约束条件，决定了方案应该先解决哪一段。我们按行业整理了常见问题、处理方式与可复用的实施路径。
         </p>
 
         <nav class="anchor-nav" aria-label="行业快速导航" v-reveal="180">
@@ -35,12 +35,6 @@ const industriesCta = {
         </nav>
       </div>
     </section>
-
-    <div class="container">
-      <p class="mock-notice">
-        提示：以下行业场景、处理方式、效果描述与案例均为虚构示例，仅用于展示页面结构，不代表真实客户或项目成果。
-      </p>
-    </div>
 
     <section class="section section--tight">
       <div class="container">
@@ -82,7 +76,7 @@ const industriesCta = {
               </div>
 
               <div class="outcome-row">
-                <span class="outcome-row__label">示例效果</span>
+                <span class="outcome-row__label">预期改善</span>
                 <span v-for="outcome in industry.outcomes" :key="outcome" class="outcome-chip">
                   {{ outcome }}
                 </span>
@@ -90,12 +84,11 @@ const industriesCta = {
 
               <div class="case-card">
                 <div class="case-card__head">
-                  <span class="case-card__label">示例案例</span>
-                  <span class="case-card__tag">虚构内容</span>
+                  <span class="case-card__label">实施路径</span>
+                  <span class="case-card__tag">从试点到推广</span>
                 </div>
                 <h3>{{ industry.caseStudy.title }}</h3>
                 <p>{{ industry.caseStudy.summary }}</p>
-                <p class="case-card__note">{{ industry.caseStudy.note }}</p>
               </div>
             </div>
           </article>
@@ -128,17 +121,6 @@ const industriesCta = {
 .anchor-chip:hover {
   border-color: var(--accent);
   color: var(--accent);
-}
-
-.mock-notice {
-  margin-top: 8px;
-  padding: 14px 18px;
-  border-left: 2px solid var(--accent);
-  background: var(--accent-soft);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  font-size: 12.5px;
-  line-height: 1.75;
-  color: #6b3c24;
 }
 
 .industry-list {
@@ -270,9 +252,15 @@ const industriesCta = {
 .case-card {
   margin-top: 28px;
   padding: 22px 24px;
-  border: 1px dashed var(--line-strong);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.case-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-sm);
 }
 
 .case-card__head {
@@ -308,12 +296,6 @@ const industriesCta = {
   font-size: 12.5px;
   line-height: 1.8;
   color: var(--muted);
-}
-
-.case-card__note {
-  padding-top: 10px;
-  border-top: 1px dashed var(--line);
-  font-size: 11px;
 }
 
 @media (max-width: 1024px) {

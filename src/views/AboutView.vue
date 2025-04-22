@@ -7,23 +7,23 @@ const aboutCta = {
   eyebrow: 'GET IN TOUCH',
   title: '想聊产品，也可以先聊问题',
   description:
-    '无论你只是想交流页面结构，还是有一个真实场景想验证思路，都欢迎通过联系页面留言。本站为练手项目，回复仅为演示。',
+    '无论你正在评估一个具体的接入场景，还是想了解我们的方案边界，都欢迎通过联系页面留言。我们会先做初步判断，再安排后续沟通。',
   primaryCta: { label: '前往联系我们', to: '/contact' },
   secondaryCta: { label: '浏览产品模块', to: '/products' },
 }
 
 const scope = {
   done: [
-    '完整的前端页面骨架与路由结构',
-    '集中管理的 mock 数据文件',
-    '响应式布局与移动端折叠菜单',
-    '前端校验与提交占位表单',
+    '现场调研与约束条件梳理',
+    '设备接入与协议适配实施',
+    '数据链路、状态看板与告警策略',
+    '操作流程、交接文档与持续支持',
   ],
   todo: [
-    '后端接口与真实数据源',
-    '内容管理与可视化编辑',
-    '真实表单服务与消息通知',
-    'SEO 深化与访问统计',
+    '设备与网络条件的现场配合',
+    '既有系统的接口开放范围',
+    '业务规则确认与验收标准',
+    '上线后的日常值守安排',
   ],
 }
 </script>
@@ -66,7 +66,7 @@ const scope = {
           <div class="identity-card__stack">
             <span v-for="item in about.stack" :key="item">{{ item }}</span>
           </div>
-          <p class="identity-card__note">本卡片用于展示品牌信息区块 · 数据为示例</p>
+          <p class="identity-card__note">EDGE · DATA · OPS</p>
         </aside>
       </div>
     </section>
@@ -74,7 +74,7 @@ const scope = {
     <section class="section principles">
       <div class="container">
         <span class="eyebrow" v-reveal>PRINCIPLES</span>
-        <h2 class="section-title" v-reveal="60">我们虚构的三条原则</h2>
+        <h2 class="section-title" v-reveal="60">我们坚持的三条原则</h2>
 
         <div class="principle-grid">
           <article
@@ -95,8 +95,8 @@ const scope = {
       <div class="container">
         <div class="roadmap-head">
           <div>
-            <span class="eyebrow" v-reveal>ROADMAP</span>
-            <h2 class="section-title" v-reveal="60">示例路线图</h2>
+            <span class="eyebrow" v-reveal>DELIVERY</span>
+            <h2 class="section-title" v-reveal="60">从评估到推广的推进节奏</h2>
           </div>
           <p class="roadmap-note" v-reveal="80">{{ about.roadmapNote }}</p>
         </div>
@@ -129,9 +129,9 @@ const scope = {
       <div class="container team-grid">
         <div class="team-intro">
           <span class="eyebrow" v-reveal>TEAM</span>
-          <h2 class="section-title" v-reveal="60">团队构成示例</h2>
+          <h2 class="section-title" v-reveal="60">团队构成</h2>
           <p class="section-lead" v-reveal="100">
-            这里不展示虚构的头像与姓名，只用角色说明来描述一个产品团队通常需要的三种能力。真实项目请替换为实际团队信息。
+            项目由三类角色共同推进，从现场调研到交付交接保持同一套判断标准。
           </p>
         </div>
 
@@ -154,18 +154,18 @@ const scope = {
       <div class="container">
         <div class="scope-card" v-reveal>
           <div class="scope-card__head">
-            <span class="eyebrow">SCOPE</span>
-            <h2 class="section-title">这个骨架做了什么，没做什么</h2>
+            <span class="eyebrow">ENGAGEMENT</span>
+            <h2 class="section-title">我们的工作边界</h2>
           </div>
           <div class="scope-columns">
             <div class="scope-column">
-              <h3>已包含</h3>
+              <h3>我们负责</h3>
               <ul>
                 <li v-for="item in scope.done" :key="item">{{ item }}</li>
               </ul>
             </div>
             <div class="scope-column scope-column--muted">
-              <h3>未包含</h3>
+              <h3>需要共同确认</h3>
               <ul>
                 <li v-for="item in scope.todo" :key="item">{{ item }}</li>
               </ul>
@@ -292,6 +292,13 @@ const scope = {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.principle-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-sm);
 }
 
 .principle-card__index {
@@ -340,6 +347,13 @@ const scope = {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.roadmap-item:hover {
+  transform: translateY(-4px);
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-sm);
 }
 
 .roadmap-item__top {

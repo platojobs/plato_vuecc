@@ -17,9 +17,9 @@ import BrandMark from './BrandMark.vue'
           </RouterLink>
           <p class="footer-blurb">{{ footer.blurb }}</p>
           <div class="footer-tags">
-            <span class="footer-tag">Vue 3 骨架</span>
-            <span class="footer-tag">示例数据</span>
-            <span class="footer-tag">纯前端</span>
+            <span class="footer-tag">边缘接入</span>
+            <span class="footer-tag">数据观测</span>
+            <span class="footer-tag">现场运维</span>
           </div>
         </div>
 
@@ -40,7 +40,7 @@ import BrandMark from './BrandMark.vue'
 
       <div class="footer-bottom">
         <p>{{ footer.copyright }}</p>
-        <p class="footer-bottom__note">练手项目 · 站内文案与数据均为占位示例</p>
+        <p class="footer-bottom__note">{{ brand.slogan }}</p>
       </div>
     </div>
   </footer>

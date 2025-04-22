@@ -100,6 +100,11 @@ ol {
   color: #fff;
 }
 
+:where(a, button, input, textarea, select):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .container {
   width: min(var(--container), calc(100% - 48px));
   margin: 0 auto;
@@ -154,6 +159,7 @@ ol {
   margin-top: 16px;
   color: var(--muted);
   font-size: 16px;
+  line-height: 1.8;
 }
 
 .btn {
@@ -317,6 +323,7 @@ ol {
   margin-top: 18px;
   color: var(--muted);
   font-size: 17px;
+  line-height: 1.8;
 }
 
 .sr-only {

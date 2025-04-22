@@ -61,7 +61,7 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
           <div class="visual-ring" aria-hidden="true"></div>
           <div class="visual-frame">
             <PlaceholderGraphic :tone="2" />
-            <span class="visual-frame__label">现场视图 · 占位图形</span>
+            <span class="visual-frame__label">现场视图</span>
           </div>
 
           <div class="visual-card">
@@ -81,7 +81,7 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
               <span>待处理告警</span>
               <strong class="is-accent">3 <em>条</em></strong>
             </div>
-            <p class="visual-card__note">示例数据 · 仅用于界面演示</p>
+            <p class="visual-card__note">运行态势概览</p>
           </div>
 
           <div class="visual-chip">
@@ -140,7 +140,7 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
         <SectionHead
           eyebrow="PRODUCTS"
           title="按场景组合出的产品模块"
-          lead="每个模块只覆盖一段能力，可以单独使用，也可以组合成完整链路。以下名称与描述均为原创示例。"
+          lead="每个模块对应一段明确能力，既可独立部署，也能按项目节奏组合成完整链路。"
         >
           <template #action>
             <RouterLink class="link-arrow" to="/products">
@@ -174,7 +174,7 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
         <SectionHead
           eyebrow="INDUSTRIES"
           title="先理解现场，再谈方案"
-          lead="不同行业的设备、网络和人员习惯都不一样。下面列出的只是示例场景，用来展示信息如何组织。"
+          lead="不同行业的设备构成、网络条件与运维习惯各不相同。我们按现场约束整理了几类典型场景，说明问题从哪来、方案先解决哪一段。"
         >
           <template #action>
             <RouterLink class="link-arrow" to="/industries">
@@ -227,8 +227,8 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
       <div class="container">
         <SectionHead
           eyebrow="AT A GLANCE"
-          title="一些用于占位的数字"
-          lead="这些数字只描述本项目骨架本身，用来展示数据排版的节奏，不代表任何真实业务指标。"
+          title="能力覆盖与组合方式"
+          lead="以下为当前产品与场景的覆盖范围，用来快速了解我们能够承接的问题类型。"
           light
         />
 
@@ -257,7 +257,7 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
         <SectionHead
           eyebrow="HOW WE WORK"
           title="把大目标拆成能验证的小步骤"
-          lead="方法并不复杂，难的是每一步都留下可检查的结果。以下四步是我们虚构的工作方式。"
+          lead="方法并不复杂，难的是每一步都留下可检查的结果。我们按四个步骤推进，每个阶段都有明确的输入与验收标准。"
         />
 
         <div class="method-track">

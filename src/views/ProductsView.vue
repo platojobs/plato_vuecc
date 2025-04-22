@@ -32,7 +32,7 @@ const productsCta = {
         <span class="eyebrow" v-reveal>PRODUCTS &amp; SOLUTIONS</span>
         <h1 class="page-head__title" v-reveal="60">产品与解决方案</h1>
         <p class="page-head__lead" v-reveal="120">
-          六个模块覆盖接入、观测、运维与场景搭建；三组方案把它们按目标组合起来。所有名称与描述均为原创示例，用于演示列表页与详情页的结构。
+          六个模块覆盖接入、观测、运维与场景搭建；三组方案把它们按目标组合起来。每个模块既可单独部署，也能随项目推进逐步扩展。
         </p>
         <div class="page-head__meta" v-reveal="180">
           <span>{{ products.length }} 个产品模块</span>
@@ -77,7 +77,7 @@ const productsCta = {
         </div>
 
         <p class="note">
-          以上产品、模块名称与能力描述均为虚构示例，不对应任何真实产品或商业承诺。
+          模块可独立部署，也可按场景组合；具体组合方式与实施顺序以现场评估结果为准。
         </p>
       </div>
     </section>
@@ -88,7 +88,7 @@ const productsCta = {
           <span class="eyebrow" v-reveal>SOLUTIONS</span>
           <h2 class="section-title" v-reveal="60">按目标组合，而不是按功能表堆叠</h2>
           <p class="section-lead" v-reveal="120">
-            同一组模块，面对不同现场会有不同的组合顺序。以下三组方案只是示例路径，实际项目仍需从现场条件出发。
+            同一组模块，面对不同现场会有不同的组合顺序。以下三组方案给出了常见的目标组合，实际项目仍需从现场条件出发调整。
           </p>
         </div>
 
@@ -222,6 +222,13 @@ const productsCta = {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.solution-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-sm);
 }
 
 .solution-card__top {
