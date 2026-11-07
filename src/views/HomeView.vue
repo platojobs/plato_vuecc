@@ -286,7 +286,7 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
   overflow: hidden;
   padding: clamp(56px, 8vw, 96px) 0 0;
   background: var(--night);
-  color: var(--paper);
+  color: var(--on-dark);
 }
 
 .hero__grid {
@@ -652,7 +652,7 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
 }
 
 .industry-row:hover {
-  background: rgba(255, 253, 248, 0.55);
+  background: var(--row-hover);
   padding-left: 12px;
 }
 
@@ -707,7 +707,7 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
 /* Stats */
 .stats-section {
   background: var(--brand);
-  color: var(--paper);
+  color: var(--on-dark);
 }
 
 .stat-grid {

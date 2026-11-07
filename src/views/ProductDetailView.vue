@@ -1,10 +1,11 @@
 <script setup>
-import { computed, watchEffect } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { products } from '@/data/site'
 import PlaceholderGraphic from '@/components/PlaceholderGraphic.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import CtaBanner from '@/components/CtaBanner.vue'
+import Breadcrumbs from '@/components/Breadcrumbs.vue'
 
 const route = useRoute()
 
@@ -19,12 +20,6 @@ const relatedProducts = computed(() => {
     (item) => item.category !== product.value.category && item.slug !== product.value.slug,
   )
   return [...sameCategory, ...others].slice(0, 2)
-})
-
-watchEffect(() => {
-  if (product.value) {
-    document.title = `${product.value.name} · Plato科技`
-  }
 })
 
 const detailCta = computed(() =>
@@ -43,22 +38,19 @@ const detailCta = computed(() =>
 
 <template>
   <div v-if="product" class="product-detail">
-    <div class="container breadcrumb">
-      <RouterLink to="/">首页</RouterLink>
-      <span>/</span>
-      <RouterLink to="/products">产品与解决方案</RouterLink>
-      <span>/</span>
-      <span class="breadcrumb__current">{{ product.name }}</span>
-    </div>
+    <Breadcrumbs
+      :items="[
+        { label: '首页', to: '/' },
+        { label: '产品与解决方案', to: '/products' },
+        { label: product.name },
+      ]"
+    />
 
     <section class="detail-hero">
       <div class="container detail-hero__inner">
         <div class="detail-copy">
           <span class="eyebrow" v-reveal>{{ product.categoryLabel }}</span>
-          <h1 class="detail-title" v-reveal="60">
-            {{ product.name }}
-            <span class="detail-title__en">{{ product.nameEn }}</span>
-          </h1>
+          <h1 class="detail-title" v-reveal="60">{{ product.name }}</h1>
           <p class="detail-tagline" v-reveal="100">{{ product.tagline }}</p>
           <p class="detail-summary" v-reveal="140">{{ product.summary }}</p>
           <div class="detail-actions" v-reveal="180">
@@ -182,24 +174,6 @@ const detailCta = computed(() =>
 </template>
 
 <style scoped>
-.breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  padding-top: 28px;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.breadcrumb a:hover {
-  color: var(--ink);
-}
-
-.breadcrumb__current {
-  color: var(--ink-soft);
-}
-
 .detail-hero {
   padding: clamp(32px, 5vw, 56px) 0 clamp(48px, 6vw, 72px);
 }
@@ -219,14 +193,6 @@ const detailCta = computed(() =>
   margin-top: 16px;
   font-size: clamp(34px, 4.4vw, 54px);
   letter-spacing: -0.03em;
-}
-
-.detail-title__en {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  color: var(--muted);
 }
 
 .detail-tagline {

@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { productCategories, products, solutions } from '@/data/site'
 import ProductCard from '@/components/ProductCard.vue'
 import CtaBanner from '@/components/CtaBanner.vue'
+import Breadcrumbs from '@/components/Breadcrumbs.vue'
 
 const activeCategory = ref('all')
 
@@ -27,6 +28,8 @@ const productsCta = {
 
 <template>
   <div class="products-page">
+    <Breadcrumbs :items="[{ label: '首页', to: '/' }, { label: '产品与解决方案' }]" />
+
     <section class="page-head">
       <div class="container">
         <span class="eyebrow" v-reveal>PRODUCTS &amp; SOLUTIONS</span>
@@ -95,6 +98,7 @@ const productsCta = {
         <div class="solution-grid">
           <article
             v-for="(solution, index) in solutions"
+            :id="`solution-${solution.id}`"
             :key="solution.id"
             class="solution-card"
             v-reveal="index * 70"
@@ -216,6 +220,7 @@ const productsCta = {
 }
 
 .solution-card {
+  scroll-margin-top: 100px;
   display: flex;
   flex-direction: column;
   padding: 26px 24px;
@@ -279,13 +284,13 @@ const productsCta = {
   border: 1px dashed var(--line-strong);
   border-radius: var(--radius-sm);
   font-size: 13px;
-  color: var(--brand);
+  color: var(--link);
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .solution-module:hover {
-  border-color: var(--brand);
-  background: rgba(21, 50, 70, 0.04);
+  border-color: var(--link);
+  background: var(--hover-soft);
 }
 
 .solution-card__suited {

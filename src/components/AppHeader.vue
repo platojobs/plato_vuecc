@@ -3,9 +3,12 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { brand, industries, nav, products } from '@/data/site'
 import BrandMark from './BrandMark.vue'
+import SearchDialog from './SearchDialog.vue'
+import ThemeToggle from './ThemeToggle.vue'
 
 const route = useRoute()
 const menuOpen = ref(false)
+const searchOpen = ref(false)
 const openMenu = ref(null)
 const mobileGroups = ref({})
 const desktopNavRef = ref(null)
@@ -59,6 +62,25 @@ function closeMenus() {
   menuOpen.value = false
 }
 
+function openSearch() {
+  openMenu.value = null
+  menuOpen.value = false
+  searchOpen.value = true
+}
+
+function closeSearch() {
+  searchOpen.value = false
+}
+
+function toggleMobileMenu() {
+  if (!menuOpen.value) searchOpen.value = false
+  menuOpen.value = !menuOpen.value
+}
+
+function handleSearchRequest() {
+  openSearch()
+}
+
 function handleNavEnter(item) {
   openMenu.value = item.children ? item.key : null
 }
@@ -102,6 +124,12 @@ function handleDocumentPointerDown(event) {
 }
 
 function handleDocumentKeyDown(event) {
+  if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+    event.preventDefault()
+    openSearch()
+    return
+  }
+
   if (event.key !== 'Escape' || event.defaultPrevented) return
   if (!openMenu.value && !menuOpen.value) return
   event.preventDefault()
@@ -122,6 +150,7 @@ function isMobileGroupOpen(key) {
 function handleDesktopChange(event) {
   if (event.matches) {
     menuOpen.value = false
+    searchOpen.value = false
     openMenu.value = null
   }
 }
@@ -130,13 +159,12 @@ watch(
   () => route.fullPath,
   () => {
     menuOpen.value = false
+    searchOpen.value = false
     openMenu.value = null
   },
 )
 
 watch(menuOpen, (open) => {
-  document.body.style.overflow = open ? 'hidden' : ''
-
   if (open) {
     const expanded = {}
     navItems.value.forEach((item) => {
@@ -147,11 +175,16 @@ watch(menuOpen, (open) => {
   }
 })
 
+watch([menuOpen, searchOpen], ([menu, search]) => {
+  document.body.style.overflow = menu || search ? 'hidden' : ''
+})
+
 onMounted(() => {
   desktopQuery = window.matchMedia('(min-width: 901px)')
   desktopQuery.addEventListener('change', handleDesktopChange)
   document.addEventListener('pointerdown', handleDocumentPointerDown)
   document.addEventListener('keydown', handleDocumentKeyDown)
+  window.addEventListener('plato:search', handleSearchRequest)
 })
 
 onBeforeUnmount(() => {
@@ -159,6 +192,7 @@ onBeforeUnmount(() => {
   desktopQuery?.removeEventListener('change', handleDesktopChange)
   document.removeEventListener('pointerdown', handleDocumentPointerDown)
   document.removeEventListener('keydown', handleDocumentKeyDown)
+  window.removeEventListener('plato:search', handleSearchRequest)
 })
 </script>
 
@@ -269,6 +303,34 @@ onBeforeUnmount(() => {
       </nav>
 
       <div class="header-actions">
+        <button
+          class="icon-btn search-trigger"
+          type="button"
+          aria-label="站内搜索（快捷键 Ctrl 或 Command 加 K）"
+          title="站内搜索"
+          @click="openSearch"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+            <circle
+              cx="10.5"
+              cy="10.5"
+              r="6.2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+            />
+            <path
+              d="m15.2 15.2 4.6 4.6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+
+        <ThemeToggle />
+
         <RouterLink class="btn btn--primary header-cta" to="/contact">
           聊聊需求
           <svg class="btn__arrow" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
@@ -288,7 +350,7 @@ onBeforeUnmount(() => {
           :aria-expanded="menuOpen"
           aria-controls="mobile-menu"
           :aria-label="menuOpen ? '关闭导航菜单' : '打开导航菜单'"
-          @click="menuOpen = !menuOpen"
+          @click="toggleMobileMenu"
         >
           <span class="menu-toggle__bars" :class="{ 'is-open': menuOpen }">
             <span></span>
@@ -302,6 +364,28 @@ onBeforeUnmount(() => {
     <Transition name="menu">
       <div v-if="menuOpen" id="mobile-menu" class="mobile-panel">
         <nav class="mobile-nav" aria-label="移动端导航">
+          <button class="mobile-search" type="button" @click="openSearch">
+            <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true">
+              <circle
+                cx="10.5"
+                cy="10.5"
+                r="6.2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              />
+              <path
+                d="m15.2 15.2 4.6 4.6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+              />
+            </svg>
+            <span>搜索站内内容</span>
+            <span class="mobile-search__meta">产品 · 行业 · 洞察</span>
+          </button>
+
           <template v-for="(item, index) in navItems" :key="item.key">
             <div v-if="item.children" class="mobile-group">
               <button
@@ -385,6 +469,13 @@ onBeforeUnmount(() => {
         </nav>
 
         <div class="mobile-foot">
+          <div class="mobile-theme">
+            <div>
+              <span class="mobile-theme__label">界面主题</span>
+              <span class="mobile-theme__desc">默认跟随系统，可手动切换</span>
+            </div>
+            <ThemeToggle />
+          </div>
           <RouterLink class="btn btn--accent mobile-cta" to="/contact" @click="closeMenus">
             聊聊你的场景
           </RouterLink>
@@ -392,6 +483,8 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </Transition>
+
+    <SearchDialog :open="searchOpen" @close="closeSearch" />
   </header>
 </template>
 
@@ -401,7 +494,7 @@ onBeforeUnmount(() => {
   top: 0;
   z-index: 50;
   border-bottom: 1px solid var(--line);
-  background: rgba(244, 241, 234, 0.88);
+  background: var(--header-bg);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
@@ -410,7 +503,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 18px;
   height: var(--header-height);
 }
 
@@ -470,7 +563,7 @@ onBeforeUnmount(() => {
 
 .nav-link:hover {
   color: var(--ink);
-  background: rgba(20, 26, 32, 0.05);
+  background: var(--hover-soft);
 }
 
 .nav-link.is-active {
@@ -602,7 +695,7 @@ onBeforeUnmount(() => {
   border-top: 1px solid var(--line);
   font-size: 12px;
   font-weight: 600;
-  color: var(--brand);
+  color: var(--link);
 }
 
 .dropdown__more svg {
@@ -627,7 +720,7 @@ onBeforeUnmount(() => {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .header-cta {
@@ -705,6 +798,40 @@ onBeforeUnmount(() => {
   flex-direction: column;
 }
 
+.mobile-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  padding: 13px 15px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-align: left;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.mobile-search:hover {
+  border-color: var(--line-strong);
+  background: var(--paper);
+}
+
+.mobile-search svg {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.mobile-search__meta {
+  margin-left: auto;
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
 .mobile-group {
   border-bottom: 1px solid var(--line);
 }
@@ -777,7 +904,7 @@ onBeforeUnmount(() => {
   padding: 9px 0 11px;
   font-size: 12.5px;
   font-weight: 600;
-  color: var(--brand);
+  color: var(--link);
 }
 
 .mobile-sub__item {
@@ -840,6 +967,32 @@ onBeforeUnmount(() => {
   width: 100%;
 }
 
+.mobile-theme {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+  padding: 12px 15px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.mobile-theme__label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.mobile-theme__desc {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
 .mobile-note {
   margin-top: 16px;
   font-size: 13px;
@@ -857,14 +1010,33 @@ onBeforeUnmount(() => {
   transform: translateY(-8px);
 }
 
-@media (max-width: 900px) {
-  .desktop-nav,
+@media (max-width: 1080px) {
   .header-cta {
+    display: none;
+  }
+
+  .nav-link {
+    padding: 8px 11px;
+  }
+}
+
+@media (max-width: 900px) {
+  .desktop-nav {
     display: none;
   }
 
   .menu-toggle {
     display: inline-flex;
+  }
+}
+
+@media (max-width: 360px) {
+  .header-actions .theme-toggle {
+    display: none;
+  }
+
+  .header-inner {
+    gap: 12px;
   }
 }
 

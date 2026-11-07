@@ -25,6 +25,72 @@
   --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Songti SC",
     serif;
   --header-height: 72px;
+  --on-dark: #f4f1ea;
+  --link: #153246;
+  --header-bg: rgba(244, 241, 234, 0.88);
+  --hover-soft: rgba(20, 26, 32, 0.05);
+  --tag-bg: rgba(255, 253, 248, 0.5);
+  --ghost-hover: rgba(255, 253, 248, 0.6);
+  --row-hover: rgba(255, 253, 248, 0.55);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f161b;
+    --paper-deep: #121b21;
+    --surface: #172127;
+    --ink: #e9e4da;
+    --ink-soft: #c3c8c5;
+    --muted: #8a959a;
+    --line: rgba(233, 228, 218, 0.12);
+    --line-strong: rgba(233, 228, 218, 0.24);
+    --brand: #2b5b72;
+    --brand-soft: #3a7189;
+    --night: #091219;
+    --accent: #d07a52;
+    --accent-soft: rgba(208, 122, 82, 0.16);
+    --success: #5aa88c;
+    --danger: #d2765f;
+    --shadow-sm: 0 6px 18px rgba(0, 0, 0, 0.32);
+    --shadow: 0 18px 48px rgba(0, 0, 0, 0.44);
+    --on-dark: #f2eee6;
+    --link: #8fb9cc;
+    --header-bg: rgba(15, 22, 27, 0.88);
+    --hover-soft: rgba(255, 255, 255, 0.06);
+    --tag-bg: rgba(255, 255, 255, 0.05);
+    --ghost-hover: rgba(255, 255, 255, 0.06);
+    --row-hover: rgba(255, 255, 255, 0.04);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #0f161b;
+  --paper-deep: #121b21;
+  --surface: #172127;
+  --ink: #e9e4da;
+  --ink-soft: #c3c8c5;
+  --muted: #8a959a;
+  --line: rgba(233, 228, 218, 0.12);
+  --line-strong: rgba(233, 228, 218, 0.24);
+  --brand: #2b5b72;
+  --brand-soft: #3a7189;
+  --night: #091219;
+  --accent: #d07a52;
+  --accent-soft: rgba(208, 122, 82, 0.16);
+  --success: #5aa88c;
+  --danger: #d2765f;
+  --shadow-sm: 0 6px 18px rgba(0, 0, 0, 0.32);
+  --shadow: 0 18px 48px rgba(0, 0, 0, 0.44);
+  --on-dark: #f2eee6;
+  --link: #8fb9cc;
+  --header-bg: rgba(15, 22, 27, 0.88);
+  --hover-soft: rgba(255, 255, 255, 0.06);
+  --tag-bg: rgba(255, 255, 255, 0.05);
+  --ghost-hover: rgba(255, 255, 255, 0.06);
+  --row-hover: rgba(255, 255, 255, 0.04);
+  color-scheme: dark;
 }
 
 *,
@@ -46,6 +112,7 @@ body {
   font-size: 16px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1,
@@ -213,12 +280,12 @@ ol {
 
 .btn--ghost:hover {
   border-color: var(--ink);
-  background: rgba(255, 253, 248, 0.6);
+  background: var(--ghost-hover);
 }
 
 .btn--light {
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--on-dark);
+  color: var(--night);
 }
 
 .btn--light:hover {
@@ -227,11 +294,11 @@ ol {
 
 .btn--outline-light {
   border-color: rgba(244, 241, 234, 0.35);
-  color: var(--paper);
+  color: var(--on-dark);
 }
 
 .btn--outline-light:hover {
-  border-color: var(--paper);
+  border-color: var(--on-dark);
   background: rgba(244, 241, 234, 0.08);
 }
 
@@ -249,10 +316,30 @@ ol {
   padding: 5px 12px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(255, 253, 248, 0.5);
+  background: var(--tag-bg);
   font-size: 12px;
   letter-spacing: 0.04em;
   color: var(--ink-soft);
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--ink-soft);
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.icon-btn:hover {
+  border-color: var(--ink);
+  background: var(--hover-soft);
+  color: var(--ink);
 }
 
 .note {
@@ -267,7 +354,7 @@ ol {
   gap: 8px;
   font-size: 14px;
   font-weight: 600;
-  color: var(--brand);
+  color: var(--link);
 }
 
 .link-arrow svg {
@@ -292,6 +379,10 @@ ol {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  body {
+    transition: none;
   }
 
   .reveal {

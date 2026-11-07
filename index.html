@@ -4,14 +4,219 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f1ea" />
     <meta
       name="description"
-      content="Plato科技专注设备接入、边缘数据处理与现场运维，为制造、物流、园区与能源场景提供可交付的技术方案。"
+      content="Plato科技为制造、物流、园区与能源场景提供设备接入、边缘数据处理与现场运维能力，把分散的设备与系统整理成一条可交付的链路。"
     />
-    <title>Plato科技 · 让技术方案走到现场</title>
+    <meta name="author" content="Plato科技" />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://platojobs.github.io/plato_vuecc/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Plato科技" />
+    <meta property="og:title" content="Plato科技 · 让技术方案，从图纸走到现场" />
+    <meta
+      property="og:description"
+      content="Plato科技为制造、物流、园区与能源场景提供设备接入、边缘数据处理与现场运维能力，把分散的设备与系统整理成一条可交付的链路。"
+    />
+    <meta property="og:url" content="https://platojobs.github.io/plato_vuecc/" />
+    <meta property="og:image" content="https://platojobs.github.io/plato_vuecc/share.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Plato科技 · 让技术方案，从图纸走到现场" />
+    <meta
+      name="twitter:description"
+      content="设备接入、边缘数据处理与现场运维，把分散的设备与系统整理成一条可交付的链路。"
+    />
+    <meta name="twitter:image" content="https://platojobs.github.io/plato_vuecc/share.png" />
+
+    <script>
+      ;(function () {
+        try {
+          var key = 'plato-theme'
+          var stored = window.localStorage.getItem(key)
+          var shouldDark = false
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.setAttribute('data-theme', stored)
+            document.documentElement.style.colorScheme = stored
+            shouldDark = stored === 'dark'
+          } else {
+            shouldDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          }
+          var meta = document.querySelector('meta[name="theme-color"]')
+          if (meta) meta.setAttribute('content', shouldDark ? '#0f161b' : '#f4f1ea')
+        } catch (error) {}
+      })()
+    </script>
+
+    <style>
+      :root {
+        --boot-bg: #f4f1ea;
+        --boot-deep: #ece7dc;
+        --boot-surface: #fffdf8;
+        --boot-line: #ddd5c8;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --boot-bg: #0f161b;
+          --boot-deep: #121b21;
+          --boot-surface: #172127;
+          --boot-line: #2c3840;
+        }
+      }
+
+      :root[data-theme="dark"] {
+        --boot-bg: #0f161b;
+        --boot-deep: #121b21;
+        --boot-surface: #172127;
+        --boot-line: #2c3840;
+      }
+
+      html,
+      body {
+        margin: 0;
+        background: var(--boot-bg);
+      }
+
+      .boot {
+        min-height: 100vh;
+        padding: 24px clamp(16px, 4vw, 48px);
+        box-sizing: border-box;
+      }
+
+      .boot__bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--boot-line);
+      }
+
+      .boot__logo {
+        width: 132px;
+        height: 22px;
+        border-radius: 6px;
+      }
+
+      .boot__nav {
+        width: 230px;
+        height: 14px;
+        border-radius: 6px;
+      }
+
+      .boot__main {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding-top: clamp(42px, 8vw, 88px);
+      }
+
+      .boot__line {
+        display: block;
+        border-radius: 7px;
+        margin-bottom: 14px;
+      }
+
+      .boot__line--eyebrow {
+        width: 124px;
+        height: 13px;
+      }
+
+      .boot__line--title {
+        width: min(560px, 72%);
+        height: 46px;
+      }
+
+      .boot__line--sub {
+        width: min(420px, 56%);
+        height: 15px;
+      }
+
+      .boot__cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 52px;
+      }
+
+      .boot__card {
+        height: 150px;
+        border-radius: 14px;
+      }
+
+      .boot__logo,
+      .boot__nav,
+      .boot__line,
+      .boot__card {
+        background: linear-gradient(
+          90deg,
+          var(--boot-deep) 25%,
+          var(--boot-surface) 37%,
+          var(--boot-deep) 63%
+        );
+        background-size: 400% 100%;
+        animation: boot-shimmer 1.4s ease infinite;
+      }
+
+      @keyframes boot-shimmer {
+        from {
+          background-position: 100% 0;
+        }
+        to {
+          background-position: 0 0;
+        }
+      }
+
+      @media (max-width: 860px) {
+        .boot__nav {
+          display: none;
+        }
+
+        .boot__cards {
+          grid-template-columns: 1fr;
+        }
+
+        .boot__card {
+          height: 104px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .boot__logo,
+        .boot__nav,
+        .boot__line,
+        .boot__card {
+          animation: none;
+        }
+      }
+    </style>
+
+    <title>Plato科技 · 让技术方案，从图纸走到现场</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <div class="boot" aria-hidden="true">
+        <div class="boot__bar">
+          <span class="boot__logo"></span>
+          <span class="boot__nav"></span>
+        </div>
+        <div class="boot__main">
+          <span class="boot__line boot__line--eyebrow"></span>
+          <span class="boot__line boot__line--title"></span>
+          <span class="boot__line boot__line--sub"></span>
+          <div class="boot__cards">
+            <span class="boot__card"></span>
+            <span class="boot__card"></span>
+            <span class="boot__card"></span>
+          </div>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

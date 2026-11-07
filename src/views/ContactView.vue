@@ -1,6 +1,9 @@
 <script setup>
-import { computed, nextTick, onBeforeUnmount, reactive, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { contact } from '@/data/site'
+
+const DRAFT_KEY = 'plato-contact-draft'
+const LAST_KEY = 'plato-contact-last'
 
 const form = reactive({
   name: '',
@@ -18,8 +21,63 @@ const submitted = ref(false)
 const ticket = ref('')
 const submittedName = ref('')
 const submittedTopic = ref('')
+const draftRestored = ref(false)
+const lastSnapshot = ref(null)
 
 let timer = null
+let draftTimer = null
+let restoringDraft = false
+
+const formFields = ['name', 'company', 'email', 'phone', 'topic', 'message']
+
+function readStorage(key) {
+  try {
+    const raw = window.localStorage.getItem(key)
+    return raw ? JSON.parse(raw) : null
+  } catch (error) {
+    return null
+  }
+}
+
+function writeStorage(key, value) {
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value))
+  } catch (error) {
+    /* 本地存储不可用时不影响表单正常提交。 */
+  }
+}
+
+function removeStorage(key) {
+  try {
+    window.localStorage.removeItem(key)
+  } catch (error) {
+    /* 忽略存储异常。 */
+  }
+}
+
+function applySnapshot(snapshot) {
+  if (!snapshot || typeof snapshot !== 'object') return
+  restoringDraft = true
+  formFields.forEach((field) => {
+    if (typeof snapshot[field] === 'string') form[field] = snapshot[field]
+  })
+  Object.keys(errors).forEach((key) => delete errors[key])
+  Object.keys(touched).forEach((key) => delete touched[key])
+  nextTick(() => {
+    restoringDraft = false
+  })
+}
+
+const draftIsEmpty = computed(() => formFields.every((field) => !form[field].trim()))
+
+function persistDraft() {
+  if (restoringDraft || submitted.value) return
+  if (draftIsEmpty.value) {
+    removeStorage(DRAFT_KEY)
+    return
+  }
+  writeStorage(DRAFT_KEY, { ...form })
+}
 
 const validators = {
   name(value) {
@@ -95,15 +153,20 @@ async function handleSubmit() {
 
   submitting.value = true
   timer = window.setTimeout(() => {
+    const snapshot = { ...form }
     submittedName.value = form.name.trim()
     submittedTopic.value = form.topic
     ticket.value = `PL-${Date.now().toString(36).toUpperCase().slice(-6)}`
+    lastSnapshot.value = snapshot
+    writeStorage(LAST_KEY, { form: snapshot })
+    removeStorage(DRAFT_KEY)
     submitted.value = true
     submitting.value = false
   }, 900)
 }
 
 function resetForm() {
+  restoringDraft = true
   Object.keys(form).forEach((key) => {
     form[key] = ''
   })
@@ -111,10 +174,50 @@ function resetForm() {
   Object.keys(touched).forEach((key) => delete touched[key])
   submitted.value = false
   ticket.value = ''
+  draftRestored.value = false
+  removeStorage(DRAFT_KEY)
+  nextTick(() => {
+    restoringDraft = false
+  })
 }
+
+function discardDraft() {
+  resetForm()
+}
+
+function restoreLast() {
+  if (!lastSnapshot.value) return
+  submitted.value = false
+  ticket.value = ''
+  draftRestored.value = true
+  applySnapshot(lastSnapshot.value)
+  writeStorage(DRAFT_KEY, { ...lastSnapshot.value })
+}
+
+watch(
+  form,
+  () => {
+    if (draftTimer) window.clearTimeout(draftTimer)
+    draftTimer = window.setTimeout(persistDraft, 250)
+  },
+  { deep: true },
+)
+
+onMounted(async () => {
+  const draft = readStorage(DRAFT_KEY)
+  if (draft) {
+    draftRestored.value = true
+    applySnapshot(draft)
+    await nextTick()
+  }
+
+  const saved = readStorage(LAST_KEY)
+  if (saved?.form) lastSnapshot.value = saved.form
+})
 
 onBeforeUnmount(() => {
   if (timer) window.clearTimeout(timer)
+  if (draftTimer) window.clearTimeout(draftTimer)
 })
 </script>
 
@@ -167,6 +270,34 @@ onBeforeUnmount(() => {
                   <p>带 * 的字段为必填项，请尽量填写具体信息。</p>
                 </div>
                 <span class="form-head__badge">商务咨询</span>
+              </div>
+
+              <div v-if="draftRestored || lastSnapshot" class="draft-banner">
+                <span>
+                  {{
+                    draftRestored
+                      ? '已恢复上次未提交的草稿，可以继续补充。'
+                      : '上次提交的内容已保存在本机，可随时恢复。'
+                  }}
+                </span>
+                <div class="draft-banner__actions">
+                  <button
+                    v-if="lastSnapshot"
+                    type="button"
+                    class="draft-banner__link"
+                    @click="restoreLast"
+                  >
+                    恢复上次提交内容
+                  </button>
+                  <button
+                    v-if="draftRestored"
+                    type="button"
+                    class="draft-banner__link"
+                    @click="discardDraft"
+                  >
+                    清除草稿
+                  </button>
+                </div>
               </div>
 
               <div class="form-grid">
@@ -346,6 +477,14 @@ onBeforeUnmount(() => {
                 <button class="btn btn--primary" type="button" @click="resetForm">
                   再填一份
                 </button>
+                <button
+                  v-if="lastSnapshot"
+                  class="btn btn--ghost"
+                  type="button"
+                  @click="restoreLast"
+                >
+                  恢复刚才内容
+                </button>
                 <RouterLink class="btn btn--ghost" to="/products">先看看产品</RouterLink>
               </div>
             </div>
@@ -469,6 +608,45 @@ onBeforeUnmount(() => {
   color: var(--accent);
 }
 
+.draft-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper-deep);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.draft-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.draft-banner__link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.draft-banner__link:hover {
+  color: var(--accent);
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -538,7 +716,7 @@ onBeforeUnmount(() => {
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  border-color: var(--brand);
+  border-color: var(--link);
   background: var(--surface);
   box-shadow: 0 0 0 3px rgba(21, 50, 70, 0.1);
 }

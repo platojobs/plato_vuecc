@@ -48,7 +48,7 @@ defineProps({
   position: relative;
   padding: clamp(52px, 7vw, 84px) 0;
   background: var(--night);
-  color: var(--paper);
+  color: var(--on-dark);
   overflow: hidden;
 }
 
@@ -77,7 +77,7 @@ defineProps({
   font-size: clamp(28px, 3.6vw, 44px);
   letter-spacing: -0.025em;
   white-space: pre-line;
-  color: var(--paper);
+  color: var(--on-dark);
 }
 
 .cta-desc {

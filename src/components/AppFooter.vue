@@ -77,7 +77,7 @@ import BrandMark from './BrandMark.vue'
 .footer-logo__text strong {
   font-size: 17px;
   font-weight: 650;
-  color: var(--paper);
+  color: var(--on-dark);
 }
 
 .footer-logo__text span {

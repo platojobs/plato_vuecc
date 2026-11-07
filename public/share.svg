@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <title>Plato科技 · 让技术方案，从图纸走到现场</title>
+  <rect width="1200" height="630" fill="#0b1720" />
+  <g stroke="#f4f1ea" stroke-opacity="0.055" stroke-width="1">
+    <path d="M0 90h1200M0 180h1200M0 270h1200M0 360h1200M0 450h1200M0 540h1200" />
+    <path d="M100 0v630M200 0v630M300 0v630M400 0v630M500 0v630M600 0v630M700 0v630M800 0v630M900 0v630M1000 0v630M1100 0v630" />
+  </g>
+
+  <g transform="translate(952 210)" fill="none" stroke="#f4f1ea" stroke-opacity="0.18">
+    <circle r="168" stroke-width="1.2" />
+    <circle r="122" stroke-width="1" stroke-opacity="0.14" />
+    <circle r="74" stroke-width="1" stroke-opacity="0.1" />
+  </g>
+  <g transform="translate(952 210)" fill="none" stroke="#c4683f" stroke-opacity="0.55" stroke-width="1.4">
+    <path d="M-168 0h74M94 0h74" />
+    <path d="M0 -168v74M0 94v74" />
+    <circle r="6" fill="#c4683f" stroke="none" />
+    <circle cx="-122" cy="52" r="4" fill="#f4f1ea" stroke="none" fill-opacity="0.7" />
+    <circle cx="96" cy="-84" r="4" fill="#c4683f" stroke="none" fill-opacity="0.8" />
+    <path d="M-122 52 0 0 96 -84" stroke-opacity="0.3" />
+  </g>
+
+  <g transform="translate(88 76)">
+    <rect width="34" height="34" rx="7" fill="#c4683f" />
+    <path d="M9 9h10.5a7 7 0 0 1 0 14H13v4H9V9Zm4 4v6h6.5a3 3 0 0 0 0-6H13Z" fill="#0b1720" />
+    <text x="48" y="17" fill="#f4f1ea" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="20" font-weight="600" letter-spacing="0.02em">Plato科技</text>
+    <text x="48" y="34" fill="#f4f1ea" fill-opacity="0.48" font-family="Georgia, Palatino, serif" font-size="10.5" letter-spacing="0.18em">PLATO TECHNOLOGY</text>
+  </g>
+
+  <g transform="translate(88 214)">
+    <rect width="4" height="18" fill="#c4683f" />
+    <text x="18" y="15" fill="#f4f1ea" fill-opacity="0.6" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="14" letter-spacing="0.24em">EDGE · DATA · OPERATIONS</text>
+  </g>
+
+  <g transform="translate(88 326)">
+    <text fill="#f4f1ea" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="68" font-weight="600" letter-spacing="-0.03em">
+      <tspan x="0" y="0">让技术方案，</tspan>
+      <tspan x="0" y="88">从图纸走到现场</tspan>
+    </text>
+  </g>
+
+  <text x="88" y="486" fill="#f4f1ea" fill-opacity="0.62" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="20" letter-spacing="0.02em">设备接入 · 边缘数据处理 · 现场运维 · 行业方案</text>
+
+  <g transform="translate(88 540)">
+    <line x1="0" y1="0" x2="1024" y2="0" stroke="#f4f1ea" stroke-opacity="0.14" />
+    <text y="42" fill="#f4f1ea" fill-opacity="0.44" font-family="Georgia, Palatino, serif" font-size="13" letter-spacing="0.08em">platojobs.github.io/plato_vuecc</text>
+    <text x="1024" y="42" text-anchor="end" fill="#c4683f" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="13" letter-spacing="0.1em">连接 · 观测 · 运维</text>
+  </g>
+</svg>

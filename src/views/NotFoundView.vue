@@ -1,5 +1,9 @@
 <script setup>
 import PlaceholderGraphic from '@/components/PlaceholderGraphic.vue'
+
+function openSearch() {
+  window.dispatchEvent(new CustomEvent('plato:search'))
+}
 </script>
 
 <template>
@@ -10,17 +14,21 @@ import PlaceholderGraphic from '@/components/PlaceholderGraphic.vue'
         <span class="eyebrow eyebrow--light">404 / NOT FOUND</span>
         <h1 class="not-found__title">这个页面走丢了</h1>
         <p class="not-found__desc">
-          链接可能已经失效，或者地址里有一个小小的拼写错误。你可以回到首页重新开始，也可以直接去产品列表看看。
+          链接可能已经失效，或者地址里有一个小小的拼写错误。你可以回到首页重新开始，浏览产品列表，或者直接用站内搜索查找具体内容。
         </p>
         <div class="not-found__actions">
           <RouterLink class="btn btn--light" to="/">回到首页</RouterLink>
           <RouterLink class="btn btn--outline-light" to="/products">浏览产品</RouterLink>
+          <button class="btn btn--outline-light" type="button" @click="openSearch">
+            搜索站内内容
+          </button>
         </div>
 
         <nav class="not-found__links" aria-label="常用页面">
           <span>也可能想找：</span>
           <RouterLink to="/industries">行业应用</RouterLink>
-          <RouterLink to="/about">关于我们</RouterLink>
+          <RouterLink to="/insights">洞察</RouterLink>
+          <RouterLink to="/faq">常见问题</RouterLink>
           <RouterLink to="/contact">联系我们</RouterLink>
         </nav>
       </div>
@@ -41,7 +49,7 @@ import PlaceholderGraphic from '@/components/PlaceholderGraphic.vue'
   overflow: hidden;
   padding: clamp(72px, 10vw, 130px) 0;
   background: var(--night);
-  color: var(--paper);
+  color: var(--on-dark);
 }
 
 .not-found__grid {
@@ -101,7 +109,7 @@ import PlaceholderGraphic from '@/components/PlaceholderGraphic.vue'
 }
 
 .not-found__links a:hover {
-  color: var(--paper);
+  color: var(--on-dark);
 }
 
 .not-found__visual {

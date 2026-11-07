@@ -2,6 +2,7 @@
 import { industries } from '@/data/site'
 import PlaceholderGraphic from '@/components/PlaceholderGraphic.vue'
 import CtaBanner from '@/components/CtaBanner.vue'
+import Breadcrumbs from '@/components/Breadcrumbs.vue'
 
 const industriesCta = {
   eyebrow: 'YOUR SCENARIO',
@@ -15,6 +16,8 @@ const industriesCta = {
 
 <template>
   <div class="industries-page">
+    <Breadcrumbs :items="[{ label: '首页', to: '/' }, { label: '行业应用' }]" />
+
     <section class="page-head">
       <div class="container">
         <span class="eyebrow" v-reveal>INDUSTRIES</span>
