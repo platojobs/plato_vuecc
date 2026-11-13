@@ -24,8 +24,8 @@ const navItems = computed(() =>
         ...item,
         key: 'products',
         active,
-        menuLabel: '产品模块',
-        menuFooter: '查看全部产品与方案',
+        menuLabel: '产品线',
+        menuFooter: '查看全部产品',
         children: products.map((product) => ({
           key: product.slug,
           label: product.name,

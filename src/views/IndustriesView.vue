@@ -8,7 +8,7 @@ const industriesCta = {
   eyebrow: 'YOUR SCENARIO',
   title: '你的现场不在列表里？',
   description:
-    '行业只是分类方式，真正决定方案的是设备、网络、人员与业务流程。把你的现场条件讲清楚，比套用一个行业模板更有用。',
+    '行业只是分类方式，真正决定选型的是设备接口、点位数量、供电与安装条件。把你的现场条件讲清楚，比套用一个行业模板更有用。',
   primaryCta: { label: '描述你的场景', to: '/contact' },
   secondaryCta: { label: '了解我们的能力', to: '/products' },
 }
@@ -23,7 +23,7 @@ const industriesCta = {
         <span class="eyebrow" v-reveal>INDUSTRIES</span>
         <h1 class="page-head__title" v-reveal="60">行业应用</h1>
         <p class="page-head__lead" v-reveal="120">
-          不同现场的约束条件，决定了方案应该先解决哪一段。我们按行业整理了常见问题、处理方式与可复用的实施路径。
+          以下六类现场是我们设备实际落地的方向。每类场景列出常见约束、对应机型与典型接入方式，便于判断从哪里开始选型。
         </p>
 
         <nav class="anchor-nav" aria-label="行业快速导航" v-reveal="180">

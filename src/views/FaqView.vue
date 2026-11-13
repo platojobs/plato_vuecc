@@ -14,7 +14,7 @@ const faqCta = {
   description:
     '常见问题覆盖的是通用情况。具体项目的接入条件、网络环境与交付节奏往往不同，把你的现场写下来，我们会给出更贴近实际的回答。',
   primaryCta: { label: '提交你的问题', to: '/contact' },
-  secondaryCta: { label: '浏览产品与方案', to: '/products' },
+  secondaryCta: { label: '浏览产品线', to: '/products' },
 }
 
 function openSearch() {

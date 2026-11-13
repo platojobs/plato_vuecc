@@ -15,7 +15,7 @@ const activeIndex = ref(0)
 const inputRef = ref(null)
 let previousFocus = null
 
-const hotSearches = ['设备接入', '数据观测', '现场运维', '行业场景', '常见问题']
+const hotSearches = ['边缘网关', '数据采集', '工业控制', '行业场景', '常见问题']
 
 function normalize(value) {
   return String(value ?? '')
@@ -170,7 +170,7 @@ function handleInputKeydown(event) {
                 query.trim() && results.length ? `search-option-${activeIndex}` : undefined
               "
               autocomplete="off"
-              placeholder="搜索产品、方案、行业或常见问题"
+              placeholder="搜索产品、机型、行业或常见问题"
               @keydown="handleInputKeydown"
             >
               <template #prefix>
@@ -250,11 +250,11 @@ function handleInputKeydown(event) {
               <div v-else class="search-empty">
                 <p class="search-empty__title">没有找到与“{{ query.trim() }}”相关的内容</p>
                 <p class="search-empty__desc">
-                  可以换一个更具体的设备、行业或能力名称，也可以直接从下面的入口继续浏览。
+                  可以换一个更具体的设备、机型或行业名称，也可以直接从下面的入口继续浏览。
                 </p>
                 <div class="search-empty__actions">
                   <RouterLink class="btn btn--primary" to="/products" @click="close">
-                    浏览产品与方案
+                    浏览产品线
                   </RouterLink>
                   <RouterLink class="btn btn--ghost" to="/industries" @click="close">
                     查看行业应用

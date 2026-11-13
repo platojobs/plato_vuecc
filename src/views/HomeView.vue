@@ -160,12 +160,12 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
       <div class="container">
         <SectionHead
           eyebrow="PRODUCTS"
-          title="按场景组合出的产品模块"
-          lead="每个模块对应一段明确能力，既可独立部署，也能按项目节奏组合成完整链路。"
+          title="从网关到平台的产品线"
+          lead="五类硬件整机与一套配套管理平台，按接口与安装方式划分，可单独采购，也能按现场组合。"
         >
           <template #action>
             <RouterLink class="link-arrow" to="/products">
-              查看全部 {{ products.length }} 个模块
+              查看全部 {{ products.length }} 款产品
               <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
                 <path
                   d="M2.5 8h10M8.5 3.5 13 8l-4.5 4.5"
@@ -194,8 +194,8 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
       <div class="container">
         <SectionHead
           eyebrow="INDUSTRIES"
-          title="先理解现场，再谈方案"
-          lead="不同行业的设备构成、网络条件与运维习惯各不相同。我们按现场约束整理了几类典型场景，说明问题从哪来、方案先解决哪一段。"
+          title="设备真正落地的六类现场"
+          lead="不同现场的接口、供电与安装条件各不相同。我们只保留设备已经实际部署的方向，说明现场约束、对应机型与典型接入方式。"
         >
           <template #action>
             <RouterLink class="link-arrow" to="/industries">

@@ -49,9 +49,9 @@ const insightsCta = {
   eyebrow: 'FROM READING TO PRACTICE',
   title: '看到类似的问题，想谈谈具体现场？',
   description:
-    '这些内容来自项目中的判断与取舍。如果你正在面对相近的约束，可以把设备、网络与流程现状写下来，我们一起梳理先做哪一段。',
+    '这些内容来自产品与现场的判断取舍。如果你正在面对相近的约束，可以把设备接口、点位与安装条件写下来，我们一起确认先选哪款设备。',
   primaryCta: { label: '联系我们', to: '/contact' },
-  secondaryCta: { label: '浏览产品与方案', to: '/products' },
+  secondaryCta: { label: '浏览产品线', to: '/products' },
 }
 </script>
 
@@ -64,7 +64,7 @@ const insightsCta = {
         <span class="eyebrow" v-reveal>INSIGHTS</span>
         <h1 class="page-head__title" v-reveal="60">洞察与实践笔记</h1>
         <p class="page-head__lead" v-reveal="120">
-          围绕设备接入、数据链路与现场运维，记录我们在真实约束下形成的方法。这里不追逐概念，只讨论哪些判断在项目里真正起作用。
+          围绕硬件选型、设备接入与现场运行，记录我们在真实约束下形成的方法。这里不追逐概念，只讨论哪些判断在产品里真正起作用。
         </p>
         <div class="page-head__meta" v-reveal="180">
           <span>{{ insights.length }} 篇内容</span>

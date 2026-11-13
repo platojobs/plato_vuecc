@@ -18,9 +18,9 @@ function moduleOf(slug) {
 
 const productsCta = {
   eyebrow: 'STILL EXPLORING',
-  title: '还没确定要选哪个模块？',
+  title: '还没确定要选哪款设备？',
   description:
-    '产品只是能力的容器，真正需要先确认的是你的现场条件与当前最想解决的问题。把现状说清楚，我们再一起决定从哪里开始。',
+    '不用一次定完所有机型。把设备类型、接口协议与安装位置说清楚，我们可以按现场条件给出组合建议，并从一台样机开始验证。',
   primaryCta: { label: '聊聊你的场景', to: '/contact' },
   secondaryCta: { label: '查看行业应用', to: '/industries' },
 }
@@ -35,10 +35,10 @@ const productsCta = {
         <span class="eyebrow" v-reveal>PRODUCTS &amp; SOLUTIONS</span>
         <h1 class="page-head__title" v-reveal="60">产品与解决方案</h1>
         <p class="page-head__lead" v-reveal="120">
-          六个模块覆盖接入、观测、运维与场景搭建；三组方案把它们按目标组合起来。每个模块既可单独部署，也能随项目推进逐步扩展。
+          五类硬件整机与一套设备管理平台，覆盖边缘计算、数据采集、工业控制、传感变送与无线通信；三组组合方案按现场目标搭配。
         </p>
         <div class="page-head__meta" v-reveal="180">
-          <span>{{ products.length }} 个产品模块</span>
+          <span>{{ products.length }} 款产品</span>
           <span class="dot"></span>
           <span>{{ solutions.length }} 组组合方案</span>
           <span class="dot"></span>
@@ -80,7 +80,7 @@ const productsCta = {
         </div>
 
         <p class="note">
-          模块可独立部署，也可按场景组合；具体组合方式与实施顺序以现场评估结果为准。
+          产品按标准机型交付，也可按场景组合；具体接口、配置与安装方式以选型确认结果为准。
         </p>
       </div>
     </section>
@@ -91,7 +91,7 @@ const productsCta = {
           <span class="eyebrow" v-reveal>SOLUTIONS</span>
           <h2 class="section-title" v-reveal="60">按目标组合，而不是按功能表堆叠</h2>
           <p class="section-lead" v-reveal="120">
-            同一组模块，面对不同现场会有不同的组合顺序。以下三组方案给出了常见的目标组合，实际项目仍需从现场条件出发调整。
+            同一批产品，面对不同现场会有不同的搭配方式。以下三组方案给出常见的组合，具体配置仍需按接口与点位确认。
           </p>
         </div>
 

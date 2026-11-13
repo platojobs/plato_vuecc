@@ -28,7 +28,7 @@ const detailCta = computed(() =>
         eyebrow: 'NEXT STEP',
         title: `想进一步了解${product.value.name}？`,
         description:
-          '把现场的设备规模、网络条件与当前最想解决的问题写下来，我们可以一起判断这个模块是否合适，以及应该先接入哪一段。',
+          '把设备类型、接口协议、点位数量与安装位置写下来，我们可以一起判断这款设备是否合适，以及需要补充哪些接口与配件。',
         primaryCta: { label: '联系我们', to: '/contact' },
         secondaryCta: { label: '返回产品列表', to: '/products' },
       }
@@ -55,7 +55,7 @@ const detailCta = computed(() =>
           <p class="detail-summary" v-reveal="140">{{ product.summary }}</p>
           <div class="detail-actions" v-reveal="180">
             <RouterLink class="btn btn--primary" to="/contact">
-              咨询该方案
+              获取选型建议
               <svg class="btn__arrow" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
                 <path
                   d="M2.5 8h10M8.5 3.5 13 8l-4.5 4.5"
@@ -74,8 +74,8 @@ const detailCta = computed(() =>
             <PlaceholderGraphic :tone="product.tone" :label="product.nameEn" />
           </div>
           <div class="detail-visual__caption">
-            <span>模块示意图</span>
-            <span>基于现场链路的抽象表达</span>
+            <span>产品示意图</span>
+            <span>机型外观与接口示意</span>
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@ const detailCta = computed(() =>
       <div class="container detail-grid">
         <div class="detail-main">
           <span class="eyebrow" v-reveal>OVERVIEW</span>
-          <h2 class="section-title" v-reveal="60">这个模块解决什么</h2>
+          <h2 class="section-title" v-reveal="60">产品定位与用途</h2>
           <p class="detail-description" v-reveal="100">{{ product.description }}</p>
 
           <div class="highlight-grid">
@@ -104,7 +104,7 @@ const detailCta = computed(() =>
 
         <aside class="detail-aside" v-reveal="80">
           <div class="spec-panel">
-            <h3 class="spec-panel__title">能力概览</h3>
+            <h3 class="spec-panel__title">规格概览</h3>
             <dl class="spec-list">
               <div v-for="spec in product.specs" :key="spec.label" class="spec-row">
                 <dt>{{ spec.label }}</dt>
@@ -118,7 +118,7 @@ const detailCta = computed(() =>
             <ul class="use-case-list">
               <li v-for="useCase in product.useCases" :key="useCase">{{ useCase }}</li>
             </ul>
-            <p class="spec-panel__note">具体能力范围以现场评估与实施方案为准。</p>
+            <p class="spec-panel__note">参数为典型配置值，具体以选型确认的型号与规格为准。</p>
           </div>
         </aside>
       </div>
@@ -129,10 +129,10 @@ const detailCta = computed(() =>
         <div class="related-head">
           <div>
             <span class="eyebrow" v-reveal>RELATED</span>
-            <h2 class="section-title" v-reveal="60">可以一起使用的模块</h2>
+            <h2 class="section-title" v-reveal="60">可以配套使用的产品</h2>
           </div>
           <RouterLink class="link-arrow" to="/products">
-            查看全部模块
+            查看全部产品
             <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
               <path
                 d="M2.5 8h10M8.5 3.5 13 8l-4.5 4.5"
@@ -163,7 +163,7 @@ const detailCta = computed(() =>
       <span class="eyebrow">NOT FOUND</span>
       <h1 class="missing__title">没有找到这个产品</h1>
       <p class="missing__desc">
-        链接中的产品标识可能已经变更，或该模块已调整到其他分类。你可以返回列表重新选择。
+        链接中的产品标识可能已经变更，或该产品已调整到其他分类。你可以返回列表重新选择。
       </p>
       <div class="missing__actions">
         <RouterLink class="btn btn--primary" to="/products">返回产品列表</RouterLink>

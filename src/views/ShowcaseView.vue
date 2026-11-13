@@ -277,12 +277,12 @@ function restoreEditFocus() {
         <span class="eyebrow" v-reveal>CAPABILITY BOARD</span>
         <h1 class="page-head__title" v-reveal="60">能力看板</h1>
         <p class="page-head__lead" v-reveal="120">
-          把正在推进的设备接入与数据链路项目放在同一张看板上：谁在负责、推进到哪一段、哪些节点需要提前协调。这里的判断来自现场，不追求好看的完成率。
+          把正在推进的硬件交付项目放在同一张看板上：机型、数量、负责人与上线节点一眼可见。进度按实际交付更新，不追求好看的完成率。
         </p>
         <div class="page-head__meta" v-reveal="180">
           <span>{{ projects.length }} 个项目</span>
           <span class="dot"></span>
-          <span>制造 · 物流 · 园区 · 能源</span>
+          <span>工业 · 能源 · 冷链 · 楼宇 · 交通 · 水务</span>
         </div>
       </div>
     </section>

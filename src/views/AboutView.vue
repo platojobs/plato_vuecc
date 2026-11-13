@@ -5,24 +5,24 @@ import CtaBanner from '@/components/CtaBanner.vue'
 
 const aboutCta = {
   eyebrow: 'GET IN TOUCH',
-  title: '想聊产品，也可以先聊问题',
+  title: '想聊机型，也可以先聊接口',
   description:
-    '无论你正在评估一个具体的接入场景，还是想了解我们的方案边界，都欢迎通过联系页面留言。我们会先做初步判断，再安排后续沟通。',
+    '无论你正在确定机型与接口，还是想了解产品的适用边界，都欢迎通过联系页面留言。我们会先给出选型建议，再安排后续沟通。',
   primaryCta: { label: '前往联系我们', to: '/contact' },
-  secondaryCta: { label: '浏览产品模块', to: '/products' },
+  secondaryCta: { label: '浏览产品线', to: '/products' },
 }
 
 const scope = {
   done: [
-    '现场调研与约束条件梳理',
-    '设备接入与协议适配实施',
-    '数据链路、状态看板与告警策略',
-    '操作流程、交接文档与持续支持',
+    '标准机型的选型与配置',
+    '接口定义、协议适配与固件策略',
+    '出厂测试、设备身份写入与批量交付',
+    '平台接入配置与技术支持',
   ],
   todo: [
-    '设备与网络条件的现场配合',
-    '既有系统的接口开放范围',
-    '业务规则确认与验收标准',
+    '设备清单、点位表与协议文档',
+    '安装位置、供电与网络条件',
+    '现场安装与接线实施',
     '上线后的日常值守安排',
   ],
 }
@@ -96,7 +96,7 @@ const scope = {
         <div class="roadmap-head">
           <div>
             <span class="eyebrow" v-reveal>DELIVERY</span>
-            <h2 class="section-title" v-reveal="60">从评估到推广的推进节奏</h2>
+            <h2 class="section-title" v-reveal="60">从选型到批量交付的推进节奏</h2>
           </div>
           <p class="roadmap-note" v-reveal="80">{{ about.roadmapNote }}</p>
         </div>
@@ -131,7 +131,7 @@ const scope = {
           <span class="eyebrow" v-reveal>TEAM</span>
           <h2 class="section-title" v-reveal="60">团队构成</h2>
           <p class="section-lead" v-reveal="100">
-            项目由三类角色共同推进，从现场调研到交付交接保持同一套判断标准。
+            产品由三类角色共同推进，从选型到批量交付保持同一套判断标准。
           </p>
         </div>
 
@@ -155,7 +155,7 @@ const scope = {
         <div class="scope-card" v-reveal>
           <div class="scope-card__head">
             <span class="eyebrow">ENGAGEMENT</span>
-            <h2 class="section-title">我们的工作边界</h2>
+            <h2 class="section-title">我们的交付边界</h2>
           </div>
           <div class="scope-columns">
             <div class="scope-column">

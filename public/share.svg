@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <title>Plato科技 · 让技术方案，从图纸走到现场</title>
+  <title>Plato科技 · 把边缘计算，做成可交付的硬件</title>
   <rect width="1200" height="630" fill="#0b1720" />
   <g stroke="#f4f1ea" stroke-opacity="0.055" stroke-width="1">
     <path d="M0 90h1200M0 180h1200M0 270h1200M0 360h1200M0 450h1200M0 540h1200" />
@@ -29,21 +29,21 @@
 
   <g transform="translate(88 214)">
     <rect width="4" height="18" fill="#c4683f" />
-    <text x="18" y="15" fill="#f4f1ea" fill-opacity="0.6" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="14" letter-spacing="0.24em">EDGE · DATA · OPERATIONS</text>
+    <text x="18" y="15" fill="#f4f1ea" fill-opacity="0.6" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="14" letter-spacing="0.24em">SMART HARDWARE · EDGE COMPUTING</text>
   </g>
 
   <g transform="translate(88 326)">
     <text fill="#f4f1ea" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="68" font-weight="600" letter-spacing="-0.03em">
-      <tspan x="0" y="0">让技术方案，</tspan>
-      <tspan x="0" y="88">从图纸走到现场</tspan>
+      <tspan x="0" y="0">把边缘计算，</tspan>
+      <tspan x="0" y="88">做成可交付的硬件</tspan>
     </text>
   </g>
 
-  <text x="88" y="486" fill="#f4f1ea" fill-opacity="0.62" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="20" letter-spacing="0.02em">设备接入 · 边缘数据处理 · 现场运维 · 行业方案</text>
+  <text x="88" y="486" fill="#f4f1ea" fill-opacity="0.62" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="20" letter-spacing="0.02em">边缘网关 · 数据采集终端 · 工业控制器 · 设备管理平台</text>
 
   <g transform="translate(88 540)">
     <line x1="0" y1="0" x2="1024" y2="0" stroke="#f4f1ea" stroke-opacity="0.14" />
     <text y="42" fill="#f4f1ea" fill-opacity="0.44" font-family="Georgia, Palatino, serif" font-size="13" letter-spacing="0.08em">platojobs.github.io/plato_vuecc</text>
-    <text x="1024" y="42" text-anchor="end" fill="#c4683f" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="13" letter-spacing="0.1em">连接 · 观测 · 运维</text>
+    <text x="1024" y="42" text-anchor="end" fill="#c4683f" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif" font-size="13" letter-spacing="0.1em">自研硬件 · 标准机型 · 批量交付</text>
   </g>
 </svg>

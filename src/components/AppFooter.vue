@@ -21,9 +21,9 @@ function openShortcuts() {
           </RouterLink>
           <p class="footer-blurb">{{ footer.blurb }}</p>
           <div class="footer-tags">
-            <span class="footer-tag">边缘接入</span>
-            <span class="footer-tag">数据观测</span>
-            <span class="footer-tag">现场运维</span>
+            <span class="footer-tag">边缘网关</span>
+            <span class="footer-tag">数据采集</span>
+            <span class="footer-tag">设备管理</span>
           </div>
         </div>
 
