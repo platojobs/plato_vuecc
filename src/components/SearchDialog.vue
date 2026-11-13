@@ -156,20 +156,12 @@ function handleInputKeydown(event) {
           <h2 id="search-dialog-title" class="sr-only">站内搜索</h2>
 
           <div class="search-input-row">
-            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="10.5" cy="10.5" r="6.2" fill="none" stroke="currentColor" stroke-width="1.6" />
-              <path
-                d="m15.2 15.2 4.6 4.6"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.6"
-                stroke-linecap="round"
-              />
-            </svg>
-            <input
+            <el-input
+              id="site-search-input"
               ref="inputRef"
               v-model="query"
-              class="search-input"
+              class="search-el-input"
+              size="large"
               type="search"
               role="combobox"
               aria-expanded="true"
@@ -180,14 +172,35 @@ function handleInputKeydown(event) {
               autocomplete="off"
               placeholder="搜索产品、方案、行业或常见问题"
               @keydown="handleInputKeydown"
-            />
+            >
+              <template #prefix>
+                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle
+                    cx="10.5"
+                    cy="10.5"
+                    r="6.2"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="m15.2 15.2 4.6 4.6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </template>
+            </el-input>
             <button class="search-close" type="button" aria-label="关闭搜索" @click="close">
               关闭
               <span>Esc</span>
             </button>
           </div>
 
-          <div class="search-body">
+          <el-scrollbar class="search-body">
+            <div class="search-body__inner">
             <template v-if="query.trim()">
               <div v-if="results.length" class="search-results-wrap">
                 <p class="search-count">
@@ -279,7 +292,8 @@ function handleInputKeydown(event) {
                 </div>
               </div>
             </template>
-          </div>
+            </div>
+          </el-scrollbar>
 
           <div class="search-foot">
             <span><kbd>↑</kbd><kbd>↓</kbd> 选择</span>
@@ -333,23 +347,29 @@ function handleInputKeydown(event) {
   border-bottom: 1px solid var(--line);
 }
 
-.search-icon {
-  flex-shrink: 0;
+.search-el-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-el-input :deep(.el-input__wrapper) {
+  padding: 2px 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.search-el-input :deep(.el-input__prefix) {
   color: var(--muted);
 }
 
-.search-input {
-  flex: 1;
-  min-width: 0;
-  padding: 6px 0;
-  border: 0;
-  background: transparent;
+.search-el-input :deep(.el-input__inner) {
+  height: 34px;
   font-size: 16px;
-  outline: none;
+  color: var(--ink);
 }
 
-.search-input::-webkit-search-cancel-button {
-  display: none;
+.search-el-input :deep(.el-input__inner::placeholder) {
+  color: var(--muted);
 }
 
 .search-close {
@@ -380,7 +400,10 @@ function handleInputKeydown(event) {
 
 .search-body {
   flex: 1;
-  overflow-y: auto;
+  min-height: 0;
+}
+
+.search-body__inner {
   padding: 18px;
 }
 
@@ -643,6 +666,10 @@ function handleInputKeydown(event) {
   }
 
   .search-body {
+    padding: 0;
+  }
+
+  .search-body__inner {
     padding: 14px;
   }
 

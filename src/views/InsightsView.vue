@@ -6,11 +6,34 @@ import CtaBanner from '@/components/CtaBanner.vue'
 import Breadcrumbs from '@/components/Breadcrumbs.vue'
 
 const activeCategory = ref('all')
+const currentPage = ref(1)
+const PAGE_SIZE = 4
 
 const filteredInsights = computed(() => {
   if (activeCategory.value === 'all') return insights
   return insights.filter((item) => item.categoryId === activeCategory.value)
 })
+
+const pagedInsights = computed(() =>
+  filteredInsights.value.slice(
+    (currentPage.value - 1) * PAGE_SIZE,
+    currentPage.value * PAGE_SIZE,
+  ),
+)
+
+const categoryOptions = computed(() =>
+  insightCategories.map((category) => ({
+    ...category,
+    count:
+      category.id === 'all'
+        ? insights.length
+        : insights.filter((item) => item.categoryId === category.id).length,
+  })),
+)
+
+function handleCategoryChange() {
+  currentPage.value = 1
+}
 
 const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
   year: 'numeric',
@@ -53,30 +76,31 @@ const insightsCta = {
 
     <section class="section section--tight">
       <div class="container">
-        <div class="insight-filter" role="group" aria-label="按主题筛选洞察">
-          <button
-            v-for="category in insightCategories"
-            :key="category.id"
-            class="filter-chip"
-            :class="{ 'is-active': activeCategory === category.id }"
-            type="button"
-            :aria-pressed="activeCategory === category.id"
-            @click="activeCategory = category.id"
-          >
-            {{ category.label }}
-            <span class="filter-chip__count">
-              {{
-                category.id === 'all'
-                  ? insights.length
-                  : insights.filter((item) => item.categoryId === category.id).length
-              }}
-            </span>
-          </button>
+        <div class="insight-filter">
+          <div class="insight-filter__control">
+            <span class="insight-filter__label">主题</span>
+            <el-select
+              v-model="activeCategory"
+              class="insight-select"
+              placeholder="选择主题"
+              @change="handleCategoryChange"
+            >
+              <el-option
+                v-for="category in categoryOptions"
+                :key="category.id"
+                :label="`${category.label}（${category.count}）`"
+                :value="category.id"
+              />
+            </el-select>
+          </div>
+          <p class="insight-filter__result">
+            共 <strong>{{ filteredInsights.length }}</strong> 篇内容
+          </p>
         </div>
 
         <div class="insight-grid">
           <RouterLink
-            v-for="(insight, index) in filteredInsights"
+            v-for="(insight, index) in pagedInsights"
             :key="insight.slug"
             class="insight-card"
             :to="`/insights/${insight.slug}`"
@@ -113,6 +137,16 @@ const insightsCta = {
             </div>
           </RouterLink>
         </div>
+
+        <div v-if="filteredInsights.length > PAGE_SIZE" class="insight-pagination">
+          <el-pagination
+            v-model:current-page="currentPage"
+            background
+            layout="total, prev, pager, next"
+            :page-size="PAGE_SIZE"
+            :total="filteredInsights.length"
+          />
+        </div>
       </div>
     </section>
 
@@ -140,40 +174,84 @@ const insightsCta = {
   background: var(--line-strong);
 }
 
-.filter-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 16px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--surface);
-  font-size: 13px;
-  color: var(--ink-soft);
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-}
+@media (max-width: 600px) {
+  .insight-filter {
+    align-items: stretch;
+    flex-direction: column;
+  }
 
-.filter-chip:hover {
-  border-color: var(--line-strong);
-}
+  .insight-filter__control {
+    justify-content: space-between;
+  }
 
-.filter-chip.is-active {
-  border-color: var(--ink);
-  background: var(--ink);
-  color: var(--paper);
-}
-
-.filter-chip__count {
-  font-family: var(--font-display);
-  font-size: 11px;
-  opacity: 0.65;
+  .insight-select {
+    flex: 1;
+    max-width: 220px;
+  }
 }
 
 .insight-filter {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
   margin-bottom: 26px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.insight-filter__control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.insight-filter__label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.insight-select {
+  width: 188px;
+}
+
+.insight-select :deep(.el-select__wrapper) {
+  min-height: 40px;
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--line) inset;
+  font-size: 13px;
+}
+
+.insight-select :deep(.el-select__wrapper:hover) {
+  box-shadow: 0 0 0 1px var(--line-strong) inset;
+}
+
+.insight-select :deep(.el-select__wrapper.is-focused) {
+  box-shadow: 0 0 0 1px var(--link) inset;
+}
+
+.insight-filter__result {
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.insight-filter__result strong {
+  color: var(--ink);
+}
+
+.insight-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 34px;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
 }
 
 .insight-grid {

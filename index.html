@@ -45,7 +45,10 @@
             shouldDark = stored === 'dark'
           } else {
             shouldDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+            document.documentElement.style.colorScheme = shouldDark ? 'dark' : 'light'
           }
+          // Element Plus 深色变量依赖 html.dark，与站点主题同步可避免组件发白。
+          document.documentElement.classList.toggle('dark', shouldDark)
           var meta = document.querySelector('meta[name="theme-color"]')
           if (meta) meta.setAttribute('content', shouldDark ? '#0f161b' : '#f4f1ea')
         } catch (error) {}

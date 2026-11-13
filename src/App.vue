@@ -1,6 +1,7 @@
 <script setup>
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import router from '@/router'
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
@@ -57,28 +58,30 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="app-shell">
-    <a class="skip-link" href="#main">跳到主要内容</a>
-    <AppHeader />
-    <main id="main" ref="mainRef">
-      <RouterView />
-    </main>
-    <AppFooter />
-    <BackToTop />
+  <el-config-provider :locale="zhCn">
+    <div class="app-shell">
+      <a class="skip-link" href="#main">跳到主要内容</a>
+      <AppHeader />
+      <main id="main" ref="mainRef">
+        <RouterView />
+      </main>
+      <AppFooter />
+      <BackToTop />
 
-    <div v-if="routeLoading" class="route-skeleton" aria-hidden="true">
-      <div class="container route-skeleton__inner">
-        <span class="skeleton skeleton--eyebrow"></span>
-        <span class="skeleton skeleton--title"></span>
-        <span class="skeleton skeleton--lead"></span>
-        <div class="route-skeleton__grid">
-          <span class="skeleton skeleton--card"></span>
-          <span class="skeleton skeleton--card"></span>
-          <span class="skeleton skeleton--card"></span>
+      <div v-if="routeLoading" class="route-skeleton" aria-hidden="true">
+        <div class="container route-skeleton__inner">
+          <span class="skeleton skeleton--eyebrow"></span>
+          <span class="skeleton skeleton--title"></span>
+          <span class="skeleton skeleton--lead"></span>
+          <div class="route-skeleton__grid">
+            <span class="skeleton skeleton--card"></span>
+            <span class="skeleton skeleton--card"></span>
+            <span class="skeleton skeleton--card"></span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </el-config-provider>
 </template>
 
 <style scoped>

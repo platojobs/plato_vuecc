@@ -1,11 +1,12 @@
 <script setup>
-import { nextTick, onMounted, watch } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { faqGroups } from '@/data/site'
 import CtaBanner from '@/components/CtaBanner.vue'
 import Breadcrumbs from '@/components/Breadcrumbs.vue'
 
 const route = useRoute()
+const activeNames = ref([])
 
 const faqCta = {
   eyebrow: 'STILL HAVE QUESTIONS',
@@ -23,10 +24,15 @@ function openSearch() {
 function openHashItem() {
   const id = decodeURIComponent(route.hash.replace(/^#/, ''))
   if (!id) return
-  const target = document.getElementById(id)
-  if (target instanceof HTMLDetailsElement && !target.open) {
-    target.open = true
+  if (!activeNames.value.includes(id)) {
+    activeNames.value = [...activeNames.value, id]
   }
+  nextTick(() => {
+    const target = document.getElementById(id)
+    if (!target) return
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' })
+  })
 }
 
 onMounted(async () => {
@@ -110,17 +116,25 @@ watch(
               </div>
             </div>
 
-            <div class="faq-list">
-              <details
+            <el-collapse v-model="activeNames" class="faq-list">
+              <el-collapse-item
                 v-for="(item, itemIndex) in group.items"
                 :id="item.id"
                 :key="item.id"
+                :name="item.id"
                 class="faq-item"
                 v-reveal="itemIndex * 40"
               >
-                <summary>
+                <template #title>
                   <span class="faq-item__question">{{ item.question }}</span>
-                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                  <svg
+                    class="faq-item__icon"
+                    :class="{ 'is-open': activeNames.includes(item.id) }"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    aria-hidden="true"
+                  >
                     <path
                       d="M8 2.5v11M2.5 8h11"
                       fill="none"
@@ -129,12 +143,12 @@ watch(
                       stroke-linecap="round"
                     />
                   </svg>
-                </summary>
+                </template>
                 <div class="faq-item__answer">
                   <p>{{ item.answer }}</p>
                 </div>
-              </details>
-            </div>
+              </el-collapse-item>
+            </el-collapse>
           </section>
         </div>
       </div>
@@ -247,54 +261,69 @@ watch(
 }
 
 .faq-list {
-  display: flex;
-  flex-direction: column;
+  border: 0;
 }
 
-.faq-item {
+.faq-list :deep(.el-collapse-item) {
   scroll-margin-top: 100px;
   border-bottom: 1px solid var(--line);
 }
 
-.faq-item summary {
+.faq-list :deep(.el-collapse-item__header) {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 18px;
+  height: auto;
+  min-height: 0;
   padding: 20px 2px;
-  cursor: pointer;
+  border: 0;
+  background: transparent;
   font-size: 15.5px;
   font-weight: 600;
+  line-height: 1.6;
   color: var(--ink);
-  list-style: none;
 }
 
-.faq-item summary::-webkit-details-marker {
+.faq-list :deep(.el-collapse-item__arrow) {
   display: none;
 }
 
-.faq-item summary svg {
+.faq-list :deep(.el-collapse-item__wrap) {
+  border: 0;
+  background: transparent;
+}
+
+.faq-list :deep(.el-collapse-item__content) {
+  padding-bottom: 20px;
+}
+
+.faq-item__question {
+  flex: 1;
+  text-align: left;
+}
+
+.faq-item__icon {
   flex-shrink: 0;
   color: var(--muted);
   transition: transform 0.25s ease, color 0.25s ease;
 }
 
-.faq-item summary:hover svg {
+.faq-item__icon.is-open {
   color: var(--accent);
-}
-
-.faq-item[open] summary svg {
   transform: rotate(45deg);
+}
+
+.faq-list :deep(.el-collapse-item__header:hover) .faq-item__icon {
   color: var(--accent);
 }
 
-.faq-item summary:focus-visible {
+.faq-list :deep(.el-collapse-item__header:focus-visible) {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
 .faq-item__answer {
-  padding: 0 2px 20px;
+  padding: 0 2px;
 }
 
 .faq-item__answer p {
@@ -332,7 +361,7 @@ watch(
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .faq-item summary svg {
+  .faq-item__icon {
     transition: none;
   }
 }

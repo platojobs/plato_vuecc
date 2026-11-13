@@ -16,15 +16,24 @@ function readStored() {
   }
 }
 
+function effectiveDark(value) {
+  if (value === 'dark') return true
+  if (value === 'light') return false
+  return mediaQuery ? mediaQuery.matches : false
+}
+
 function applyPreference(value) {
   const root = document.documentElement
   if (value === 'dark' || value === 'light') {
     root.setAttribute('data-theme', value)
-    root.style.colorScheme = value
   } else {
     root.removeAttribute('data-theme')
-    root.style.colorScheme = ''
   }
+
+  const dark = effectiveDark(value)
+  // Element Plus 的深色变量挂在 html.dark 上，需要与站点主题同步。
+  root.classList.toggle('dark', dark)
+  root.style.colorScheme = dark ? 'dark' : 'light'
 }
 
 function updateMetaColor(dark) {
@@ -40,9 +49,12 @@ function initialize() {
   systemDark.value = mediaQuery.matches
   mediaQuery.addEventListener('change', (event) => {
     systemDark.value = event.matches
-    if (!stored.value) updateMetaColor(event.matches)
+    if (!stored.value) {
+      applyPreference(null)
+      updateMetaColor(event.matches)
+    }
   })
-  if (stored.value) applyPreference(stored.value)
+  applyPreference(stored.value)
   updateMetaColor(stored.value ? stored.value === 'dark' : systemDark.value)
 }
 

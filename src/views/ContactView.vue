@@ -5,6 +5,8 @@ import { contact } from '@/data/site'
 const DRAFT_KEY = 'plato-contact-draft'
 const LAST_KEY = 'plato-contact-last'
 
+const formRef = ref(null)
+
 const form = reactive({
   name: '',
   company: '',
@@ -14,8 +16,34 @@ const form = reactive({
   message: '',
 })
 
-const errors = reactive({})
-const touched = reactive({})
+const rules = {
+  name: [
+    { required: true, message: '请填写你的称呼', trigger: 'blur' },
+    { min: 2, max: 30, message: '称呼请控制在 2 到 30 个字符之间', trigger: 'blur' },
+  ],
+  company: [{ max: 40, message: '公司或团队名称请控制在 40 个字符以内', trigger: 'blur' }],
+  email: [
+    { required: true, message: '请填写邮箱地址', trigger: 'blur' },
+    {
+      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
+      message: '邮箱格式看起来不太对',
+      trigger: 'blur',
+    },
+  ],
+  phone: [
+    {
+      pattern: /^[0-9+\-\s()]{6,20}$/,
+      message: '电话只能包含数字、空格与常见分隔符',
+      trigger: 'blur',
+    },
+  ],
+  topic: [{ required: true, message: '请选择一个咨询方向', trigger: 'change' }],
+  message: [
+    { required: true, message: '请简单描述你的场景或问题', trigger: 'blur' },
+    { min: 10, max: 500, message: '描述请控制在 10 到 500 个字符之间', trigger: 'blur' },
+  ],
+}
+
 const submitting = ref(false)
 const submitted = ref(false)
 const ticket = ref('')
@@ -61,15 +89,13 @@ function applySnapshot(snapshot) {
   formFields.forEach((field) => {
     if (typeof snapshot[field] === 'string') form[field] = snapshot[field]
   })
-  Object.keys(errors).forEach((key) => delete errors[key])
-  Object.keys(touched).forEach((key) => delete touched[key])
   nextTick(() => {
     restoringDraft = false
+    formRef.value?.clearValidate()
   })
 }
 
 const draftIsEmpty = computed(() => formFields.every((field) => !form[field].trim()))
-
 function persistDraft() {
   if (restoringDraft || submitted.value) return
   if (draftIsEmpty.value) {
@@ -79,75 +105,22 @@ function persistDraft() {
   writeStorage(DRAFT_KEY, { ...form })
 }
 
-const validators = {
-  name(value) {
-    if (!value.trim()) return '请填写你的称呼'
-    if (value.trim().length < 2) return '称呼至少需要 2 个字符'
-    if (value.trim().length > 30) return '称呼请控制在 30 个字符以内'
-    return ''
-  },
-  email(value) {
-    if (!value.trim()) return '请填写邮箱地址'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim())) return '邮箱格式看起来不太对'
-    return ''
-  },
-  phone(value) {
-    if (!value.trim()) return ''
-    if (!/^[0-9+\-\s()]{6,20}$/.test(value.trim())) return '电话只能包含数字、空格与常见分隔符'
-    return ''
-  },
-  company(value) {
-    if (value.trim().length > 40) return '公司或团队名称请控制在 40 个字符以内'
-    return ''
-  },
-  topic(value) {
-    if (!value) return '请选择一个咨询方向'
-    return ''
-  },
-  message(value) {
-    if (!value.trim()) return '请简单描述你的场景或问题'
-    if (value.trim().length < 10) return '描述至少需要 10 个字符'
-    if (value.trim().length > 500) return '描述请控制在 500 个字符以内'
-    return ''
-  },
-}
-
-const checkedFields = ['name', 'email', 'phone', 'company', 'topic', 'message']
-
-function validateField(field) {
-  const message = validators[field]?.(form[field]) ?? ''
-  if (message) {
-    errors[field] = message
-  } else {
-    delete errors[field]
-  }
-  return !message
-}
-
-function handleBlur(field) {
-  touched[field] = true
-  validateField(field)
-}
-
-function validateAll() {
-  checkedFields.forEach((field) => {
-    touched[field] = true
-    validateField(field)
-  })
-  return !Object.keys(errors).length
-}
-
-const messageCount = computed(() => form.message.length)
-const hasErrors = computed(() => Object.keys(errors).length > 0)
-
 async function handleSubmit() {
-  if (submitting.value) return
-  if (!validateAll()) {
+  if (submitting.value || !formRef.value) return
+
+  try {
+    await formRef.value.validate()
+  } catch (invalidFields) {
     await nextTick()
-    const firstInvalid = document.querySelector(
-      '.contact-form .has-error input, .contact-form .has-error textarea, .contact-form .has-error select',
-    )
-    firstInvalid?.focus()
+    const firstField = Object.keys(invalidFields ?? {})[0]
+    if (firstField) {
+      formRef.value.scrollToField?.(firstField)
+    }
+    document
+      .querySelector(
+        '.contact-form .el-form-item.is-error input, .contact-form .el-form-item.is-error textarea',
+      )
+      ?.focus()
     return
   }
 
@@ -162,6 +135,10 @@ async function handleSubmit() {
     removeStorage(DRAFT_KEY)
     submitted.value = true
     submitting.value = false
+    ElMessage.success({
+      message: `留言已提交，受理编号 ${ticket.value}`,
+      duration: 3600,
+    })
   }, 900)
 }
 
@@ -170,8 +147,7 @@ function resetForm() {
   Object.keys(form).forEach((key) => {
     form[key] = ''
   })
-  Object.keys(errors).forEach((key) => delete errors[key])
-  Object.keys(touched).forEach((key) => delete touched[key])
+  formRef.value?.clearValidate()
   submitted.value = false
   ticket.value = ''
   draftRestored.value = false
@@ -258,9 +234,13 @@ onBeforeUnmount(() => {
 
         <div class="form-card" v-reveal="80">
           <Transition name="fade" mode="out-in">
-            <form
+            <el-form
               v-if="!submitted"
+              ref="formRef"
               class="contact-form"
+              :model="form"
+              :rules="rules"
+              label-position="top"
               novalidate
               @submit.prevent="handleSubmit"
             >
@@ -301,124 +281,66 @@ onBeforeUnmount(() => {
               </div>
 
               <div class="form-grid">
-                <div class="field" :class="{ 'has-error': touched.name && errors.name }">
-                  <label for="field-name">称呼 <span>*</span></label>
-                  <input
+                <el-form-item label="称呼" prop="name">
+                  <el-input
                     id="field-name"
                     v-model="form.name"
-                    type="text"
                     autocomplete="name"
                     placeholder="怎么称呼你"
-                    :aria-invalid="Boolean(touched.name && errors.name)"
-                    :aria-describedby="touched.name && errors.name ? 'error-name' : undefined"
-                    @blur="handleBlur('name')"
-                    @input="touched.name && validateField('name')"
                   />
-                  <p v-if="touched.name && errors.name" id="error-name" class="field-error">
-                    {{ errors.name }}
-                  </p>
-                </div>
+                </el-form-item>
 
-                <div class="field" :class="{ 'has-error': touched.company && errors.company }">
-                  <label for="field-company">公司 / 团队</label>
-                  <input
+                <el-form-item label="公司 / 团队" prop="company">
+                  <el-input
                     id="field-company"
                     v-model="form.company"
-                    type="text"
                     autocomplete="organization"
                     placeholder="选填"
-                    :aria-invalid="Boolean(touched.company && errors.company)"
-                    :aria-describedby="
-                      touched.company && errors.company ? 'error-company' : undefined
-                    "
-                    @blur="handleBlur('company')"
-                    @input="touched.company && validateField('company')"
                   />
-                  <p v-if="touched.company && errors.company" id="error-company" class="field-error">
-                    {{ errors.company }}
-                  </p>
-                </div>
+                </el-form-item>
 
-                <div class="field" :class="{ 'has-error': touched.email && errors.email }">
-                  <label for="field-email">邮箱 <span>*</span></label>
-                  <input
+                <el-form-item label="邮箱" prop="email">
+                  <el-input
                     id="field-email"
                     v-model="form.email"
                     type="email"
                     autocomplete="email"
                     placeholder="you@company.com"
-                    :aria-invalid="Boolean(touched.email && errors.email)"
-                    :aria-describedby="touched.email && errors.email ? 'error-email' : undefined"
-                    @blur="handleBlur('email')"
-                    @input="touched.email && validateField('email')"
                   />
-                  <p v-if="touched.email && errors.email" id="error-email" class="field-error">
-                    {{ errors.email }}
-                  </p>
-                </div>
+                </el-form-item>
 
-                <div class="field" :class="{ 'has-error': touched.phone && errors.phone }">
-                  <label for="field-phone">电话</label>
-                  <input
+                <el-form-item label="电话" prop="phone">
+                  <el-input
                     id="field-phone"
                     v-model="form.phone"
                     type="tel"
                     autocomplete="tel"
                     placeholder="选填"
-                    :aria-invalid="Boolean(touched.phone && errors.phone)"
-                    :aria-describedby="touched.phone && errors.phone ? 'error-phone' : undefined"
-                    @blur="handleBlur('phone')"
-                    @input="touched.phone && validateField('phone')"
                   />
-                  <p v-if="touched.phone && errors.phone" id="error-phone" class="field-error">
-                    {{ errors.phone }}
-                  </p>
-                </div>
+                </el-form-item>
 
-                <div class="field field--full" :class="{ 'has-error': touched.topic && errors.topic }">
-                  <label for="field-topic">咨询方向 <span>*</span></label>
-                  <select
-                    id="field-topic"
-                    v-model="form.topic"
-                    :aria-invalid="Boolean(touched.topic && errors.topic)"
-                    :aria-describedby="touched.topic && errors.topic ? 'error-topic' : undefined"
-                    @blur="handleBlur('topic')"
-                    @change="touched.topic && validateField('topic')"
-                  >
-                    <option value="" disabled>请选择一个方向</option>
-                    <option v-for="topic in contact.topics" :key="topic" :value="topic">
-                      {{ topic }}
-                    </option>
-                  </select>
-                  <p v-if="touched.topic && errors.topic" id="error-topic" class="field-error">
-                    {{ errors.topic }}
-                  </p>
-                </div>
+                <el-form-item class="form-item--full" label="咨询方向" prop="topic">
+                  <el-select id="field-topic" v-model="form.topic" placeholder="请选择一个方向">
+                    <el-option
+                      v-for="topic in contact.topics"
+                      :key="topic"
+                      :label="topic"
+                      :value="topic"
+                    />
+                  </el-select>
+                </el-form-item>
 
-                <div
-                  class="field field--full"
-                  :class="{ 'has-error': touched.message && errors.message }"
-                >
-                  <div class="field-label-row">
-                    <label for="field-message">场景描述 <span>*</span></label>
-                    <span class="field-counter">{{ messageCount }} / 500</span>
-                  </div>
-                  <textarea
+                <el-form-item class="form-item--full" label="场景描述" prop="message">
+                  <el-input
                     id="field-message"
                     v-model="form.message"
-                    rows="5"
+                    type="textarea"
+                    :rows="5"
+                    :maxlength="500"
+                    show-word-limit
                     placeholder="设备情况、网络条件、目前最想解决的问题……"
-                    :aria-invalid="Boolean(touched.message && errors.message)"
-                    :aria-describedby="
-                      touched.message && errors.message ? 'error-message' : undefined
-                    "
-                    @blur="handleBlur('message')"
-                    @input="touched.message && validateField('message')"
-                  ></textarea>
-                  <p v-if="touched.message && errors.message" id="error-message" class="field-error">
-                    {{ errors.message }}
-                  </p>
-                </div>
+                  />
+                </el-form-item>
               </div>
 
               <div class="form-foot">
@@ -442,11 +364,7 @@ onBeforeUnmount(() => {
                   </svg>
                 </button>
               </div>
-
-              <p v-if="hasErrors && submitting === false" class="form-error-summary" role="alert">
-                请先修正标红的字段，再提交留言。
-              </p>
-            </form>
+            </el-form>
 
             <div v-else class="success-panel" role="status">
               <div class="success-panel__icon" aria-hidden="true">
@@ -654,88 +572,100 @@ onBeforeUnmount(() => {
   margin-top: 24px;
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
+.form-grid :deep(.el-form-item) {
+  margin-bottom: 0;
 }
 
-.field--full {
+.form-item--full {
   grid-column: 1 / -1;
 }
 
-.field label {
+.contact-form :deep(.el-form-item__label) {
+  padding-bottom: 6px;
   font-size: 12.5px;
+  line-height: 1.5;
   color: var(--ink-soft);
 }
 
-.field label span {
+.contact-form :deep(.el-form-item.is-required .el-form-item__label::before) {
   color: var(--accent);
 }
 
-.field-label-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.contact-form :deep(.el-input__wrapper),
+.contact-form :deep(.el-select__wrapper) {
+  min-height: 44px;
+  padding: 2px 13px;
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  box-shadow: 0 0 0 1px var(--line-strong) inset;
+  transition: box-shadow 0.2s ease, background 0.2s ease;
 }
 
-.field-counter {
+.contact-form :deep(.el-input__wrapper:hover),
+.contact-form :deep(.el-select__wrapper:hover) {
+  box-shadow: 0 0 0 1px var(--line-strong) inset;
+  background: var(--surface);
+}
+
+.contact-form :deep(.el-input__wrapper.is-focus),
+.contact-form :deep(.el-select__wrapper.is-focused) {
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--link) inset, 0 0 0 3px var(--hover-soft);
+}
+
+.contact-form :deep(.el-input__inner),
+.contact-form :deep(.el-select__selected-item) {
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.contact-form :deep(.el-input__inner::placeholder),
+.contact-form :deep(.el-textarea__inner::placeholder) {
+  color: var(--muted);
+}
+
+.contact-form :deep(.el-textarea__inner) {
+  min-height: 126px !important;
+  padding: 11px 13px;
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--line-strong) inset;
+  transition: box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.contact-form :deep(.el-textarea__inner:hover) {
+  background: var(--surface);
+}
+
+.contact-form :deep(.el-textarea__inner:focus) {
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--link) inset, 0 0 0 3px var(--hover-soft);
+}
+
+.contact-form :deep(.el-input__count) {
+  background: transparent;
   font-family: var(--font-display);
   font-size: 11px;
   color: var(--muted);
 }
 
-.field input,
-.field select,
-.field textarea {
-  width: 100%;
-  padding: 11px 13px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-sm);
-  background: var(--paper);
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+.contact-form :deep(.el-form-item.is-error .el-input__wrapper),
+.contact-form :deep(.el-form-item.is-error .el-select__wrapper),
+.contact-form :deep(.el-form-item.is-error .el-textarea__inner) {
+  box-shadow: 0 0 0 1px var(--danger) inset;
 }
 
-.field textarea {
-  min-height: 126px;
-  resize: vertical;
-  line-height: 1.7;
-}
-
-.field select {
-  appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
-    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
-  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
-  background-size: 5px 5px, 5px 5px;
-  background-repeat: no-repeat;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  border-color: var(--link);
-  background: var(--surface);
-  box-shadow: 0 0 0 3px rgba(21, 50, 70, 0.1);
-}
-
-.field.has-error input,
-.field.has-error select,
-.field.has-error textarea {
-  border-color: var(--danger);
-}
-
-.field.has-error input:focus,
-.field.has-error select:focus,
-.field.has-error textarea:focus {
-  box-shadow: 0 0 0 3px rgba(166, 63, 44, 0.12);
-}
-
-.field-error {
+.contact-form :deep(.el-form-item__error) {
+  padding-top: 4px;
   font-size: 11.5px;
   color: var(--danger);
+}
+
+.contact-form :deep(.el-select) {
+  width: 100%;
 }
 
 .form-foot {
@@ -760,12 +690,6 @@ onBeforeUnmount(() => {
 .submit-btn:disabled {
   cursor: progress;
   opacity: 0.7;
-}
-
-.form-error-summary {
-  margin-top: 14px;
-  font-size: 12px;
-  color: var(--danger);
 }
 
 .success-panel {
