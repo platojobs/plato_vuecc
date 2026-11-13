@@ -25,6 +25,14 @@ export const nav = [
   { label: '联系我们', to: '/contact' },
 ]
 
+export const announcement = {
+  id: 'insights-2026-11',
+  label: '更新',
+  text: '现场接入实践笔记已更新：弱网缓存策略与远程运维的回滚边界。',
+  linkLabel: '查看洞察',
+  to: '/insights',
+}
+
 export const hero = {
   eyebrow: 'PLATO TECH · 边缘接入与现场运维',
   title: '让技术方案，\n从图纸走到现场',

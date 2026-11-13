@@ -5,7 +5,9 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import router from '@/router'
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
+import AnnouncementBar from '@/components/AnnouncementBar.vue'
 import BackToTop from '@/components/BackToTop.vue'
+import ShortcutHelp from '@/components/ShortcutHelp.vue'
 
 const route = useRoute()
 const mainRef = ref(null)
@@ -61,12 +63,14 @@ onBeforeUnmount(() => {
   <el-config-provider :locale="zhCn">
     <div class="app-shell">
       <a class="skip-link" href="#main">跳到主要内容</a>
+      <AnnouncementBar />
       <AppHeader />
-      <main id="main" ref="mainRef">
+      <main id="main" ref="mainRef" tabindex="-1">
         <RouterView />
       </main>
       <AppFooter />
       <BackToTop />
+      <ShortcutHelp />
 
       <div v-if="routeLoading" class="route-skeleton" aria-hidden="true">
         <div class="container route-skeleton__inner">
@@ -95,8 +99,12 @@ main {
   flex: 1;
 }
 
+main:focus {
+  outline: none;
+}
+
 main.page-in {
-  animation: page-in 0.35s ease both;
+  animation: page-in 0.35s ease backwards;
 }
 
 @keyframes page-in {

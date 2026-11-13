@@ -152,3 +152,81 @@ html.dark {
   --el-empty-description-margin-top: 12px;
   --el-empty-description-color: var(--muted);
 }
+
+/* 表单控件统一高度、圆角与聚焦态 */
+.el-input__wrapper,
+.el-select__wrapper {
+  min-height: 42px;
+  border-radius: 10px;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.el-textarea__inner {
+  border-radius: 10px;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.el-input__wrapper.is-focus,
+.el-select__wrapper.is-focused,
+.el-textarea__inner:focus {
+  box-shadow: 0 0 0 1px var(--accent) inset;
+  box-shadow:
+    0 0 0 1px var(--accent) inset,
+    0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.el-form-item__label {
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.el-button {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.el-button:focus-visible,
+.el-pagination button:focus-visible,
+.el-switch:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* 表格：表头弱化、单元格中线对齐 */
+.el-table {
+  --el-table-border-color: var(--line);
+  --el-table-header-bg-color: var(--paper-deep);
+  --el-table-header-text-color: var(--muted);
+  --el-table-text-color: var(--ink-soft);
+  --el-table-row-hover-bg-color: var(--row-hover);
+  --el-table-bg-color: transparent;
+  --el-table-tr-bg-color: transparent;
+  font-size: 13.5px;
+}
+
+.el-table th.el-table__cell {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.el-table .cell {
+  line-height: 1.6;
+}
+
+.el-table td.el-table__cell,
+.el-table th.el-table__cell {
+  vertical-align: middle;
+}
+
+.el-dialog,
+.el-drawer {
+  background: var(--surface);
+}
+
+.el-overlay {
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}

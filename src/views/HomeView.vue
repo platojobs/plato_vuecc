@@ -14,6 +14,9 @@ import SectionHead from '@/components/SectionHead.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import PlaceholderGraphic from '@/components/PlaceholderGraphic.vue'
 import CtaBanner from '@/components/CtaBanner.vue'
+import CountUp from '@/components/CountUp.vue'
+
+const heroTitleLines = computed(() => hero.title.split('\n'))
 
 const featuredProducts = computed(() => {
   const picks = ['edgehub', 'flowlens', 'beaconops', 'scenekit']
@@ -28,11 +31,29 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
     <section class="hero">
       <div class="hero__grid" aria-hidden="true"></div>
       <div class="hero__glow" aria-hidden="true"></div>
+      <div class="hero__glow hero__glow--alt" aria-hidden="true"></div>
+      <svg class="hero__orbit" viewBox="0 0 640 640" fill="none" aria-hidden="true">
+        <circle cx="320" cy="320" r="292" stroke="rgba(244,241,234,0.1)" />
+        <circle cx="320" cy="320" r="236" stroke="rgba(244,241,234,0.07)" stroke-dasharray="3 9" />
+        <circle cx="320" cy="320" r="168" stroke="rgba(244,241,234,0.06)" />
+        <path d="M320 28v584M28 320h584" stroke="rgba(244,241,234,0.06)" />
+        <circle cx="552" cy="188" r="5" fill="#c4683f" />
+        <circle cx="142" cy="446" r="4" fill="rgba(244,241,234,0.5)" />
+        <circle cx="320" cy="28" r="3" fill="rgba(244,241,234,0.55)" />
+      </svg>
 
       <div class="container hero__inner">
         <div class="hero__copy">
           <span class="eyebrow eyebrow--light" v-reveal>{{ hero.eyebrow }}</span>
-          <h1 class="hero__title" v-reveal="80">{{ hero.title }}</h1>
+          <h1 class="hero__title" v-reveal="80">
+            <span
+              v-for="(line, index) in heroTitleLines"
+              :key="line"
+              :class="{ 'is-accent': index === 1 }"
+            >
+              {{ line }}
+            </span>
+          </h1>
           <p class="hero__desc" v-reveal="160">{{ hero.description }}</p>
 
           <div class="hero__actions" v-reveal="220">
@@ -71,15 +92,15 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
             </div>
             <div class="visual-card__row">
               <span>接入设备</span>
-              <strong>128 <em>台</em></strong>
+              <strong><CountUp :value="128" /> <em>台</em></strong>
             </div>
             <div class="visual-card__row">
               <span>链路延迟</span>
-              <strong>42 <em>ms</em></strong>
+              <strong><CountUp :value="42" /> <em>ms</em></strong>
             </div>
             <div class="visual-card__row">
               <span>待处理告警</span>
-              <strong class="is-accent">3 <em>条</em></strong>
+              <strong class="is-accent"><CountUp :value="3" /> <em>条</em></strong>
             </div>
             <p class="visual-card__note">运行态势概览</p>
           </div>
@@ -105,7 +126,7 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
     </div>
 
     <!-- Capabilities -->
-    <section class="section capabilities">
+    <section class="section section--snug capabilities">
       <div class="container">
         <SectionHead
           eyebrow="CAPABILITIES"
@@ -135,7 +156,7 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
     </section>
 
     <!-- Products -->
-    <section class="section products">
+    <section class="section section--loose products">
       <div class="container">
         <SectionHead
           eyebrow="PRODUCTS"
@@ -169,7 +190,7 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
     </section>
 
     <!-- Industries -->
-    <section class="section industries">
+    <section class="section section--snug industries">
       <div class="container">
         <SectionHead
           eyebrow="INDUSTRIES"
@@ -223,7 +244,7 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
     </section>
 
     <!-- Stats -->
-    <section class="section stats-section">
+    <section class="section section--loose stats-section">
       <div class="container">
         <SectionHead
           eyebrow="AT A GLANCE"
@@ -240,7 +261,7 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
             v-reveal="index * 60"
           >
             <div class="stat-item__value">
-              {{ stat.value }}<span class="stat-item__unit">{{ stat.unit }}</span>
+              <CountUp :value="Number(stat.value)" /><span class="stat-item__unit">{{ stat.unit }}</span>
             </div>
             <div class="stat-item__label">{{ stat.label }}</div>
             <p class="stat-item__desc">{{ stat.description }}</p>
@@ -310,8 +331,30 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
   pointer-events: none;
 }
 
+.hero__glow--alt {
+  top: auto;
+  right: auto;
+  bottom: -260px;
+  left: -160px;
+  width: 540px;
+  height: 540px;
+  background: radial-gradient(circle, var(--hero-glow-alt), transparent 66%);
+}
+
+.hero__orbit {
+  position: absolute;
+  top: 50%;
+  right: -6%;
+  width: min(780px, 64vw);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
 .hero__inner {
   position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   gap: clamp(32px, 5vw, 72px);
@@ -321,18 +364,26 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
 
 .hero__title {
   margin-top: 22px;
-  font-size: clamp(38px, 5.6vw, 72px);
-  line-height: 1.1;
-  letter-spacing: -0.035em;
-  white-space: pre-line;
+  font-size: clamp(38px, 5.8vw, 78px);
+  line-height: 1.06;
+  letter-spacing: -0.038em;
+  text-wrap: balance;
+}
+
+.hero__title span {
+  display: block;
+}
+
+.hero__title .is-accent {
+  color: #eeb28d;
 }
 
 .hero__desc {
-  max-width: 520px;
-  margin-top: 24px;
+  max-width: 52ch;
+  margin-top: 26px;
   font-size: 16px;
-  line-height: 1.85;
-  color: rgba(244, 241, 234, 0.66);
+  line-height: 1.88;
+  color: rgba(244, 241, 234, 0.68);
 }
 
 .hero__actions {
@@ -558,18 +609,39 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
 }
 
 .capability-card {
+  position: relative;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   padding: 26px 22px 28px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.capability-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent 72%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease-out);
 }
 
 .capability-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-sm);
+  transform: translateY(-6px);
+  border-color: var(--line-strong);
+  box-shadow: var(--lift);
+}
+
+.capability-card:hover::before {
+  transform: scaleX(1);
 }
 
 .capability-card__index {
@@ -648,12 +720,17 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
   gap: 18px;
   padding: 26px 4px;
   border-bottom: 1px solid var(--line);
-  transition: background 0.25s ease, padding-left 0.25s ease;
+  transition: background 0.25s ease, padding-left 0.25s var(--ease-out);
 }
 
 .industry-row:hover {
   background: var(--row-hover);
   padding-left: 12px;
+}
+
+.industry-row:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }
 
 .industry-row__index {
@@ -778,6 +855,11 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
   height: 9px;
   border-radius: 50%;
   background: var(--accent);
+  transition: box-shadow 0.3s ease;
+}
+
+.method-step:hover::before {
+  box-shadow: 0 0 0 5px var(--accent-soft);
 }
 
 .method-step__num {
@@ -822,6 +904,12 @@ const featuredIndustries = computed(() => industries.slice(0, 6))
 
   .hero__visual {
     display: none;
+  }
+
+  .hero__orbit {
+    right: -32%;
+    width: 120vw;
+    opacity: 0.5;
   }
 
   .hero-strip-wrap {

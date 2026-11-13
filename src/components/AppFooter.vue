@@ -1,6 +1,10 @@
 <script setup>
 import { brand, footer } from '@/data/site'
 import BrandMark from './BrandMark.vue'
+
+function openShortcuts() {
+  window.dispatchEvent(new CustomEvent('plato:shortcuts'))
+}
 </script>
 
 <template>
@@ -40,6 +44,10 @@ import BrandMark from './BrandMark.vue'
 
       <div class="footer-bottom">
         <p>{{ footer.copyright }}</p>
+        <button class="footer-shortcut" type="button" @click="openShortcuts">
+          快捷键
+          <kbd>?</kbd>
+        </button>
         <p class="footer-bottom__note">{{ brand.slogan }}</p>
       </div>
     </div>
@@ -155,6 +163,36 @@ import BrandMark from './BrandMark.vue'
 
 .footer-bottom__note {
   letter-spacing: 0.04em;
+}
+
+.footer-shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid rgba(244, 241, 234, 0.16);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 11.5px;
+  color: rgba(244, 241, 234, 0.55);
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.footer-shortcut kbd {
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: rgba(244, 241, 234, 0.8);
+}
+
+.footer-shortcut:hover {
+  border-color: rgba(244, 241, 234, 0.36);
+  background: rgba(244, 241, 234, 0.06);
+  color: var(--paper);
+}
+
+.footer-shortcut:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 @media (max-width: 900px) {

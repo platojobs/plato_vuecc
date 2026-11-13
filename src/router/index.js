@@ -113,9 +113,17 @@ const router = createRouter({
   history: createWebHistory(BASE_URL),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) return savedPosition
-    if (to.hash) return { el: to.hash, top: 92, behavior: 'smooth' }
-    return { top: 0 }
+    if (savedPosition) {
+      // 前进/后退：等懒加载页面完成首屏布局后再恢复，避免高度不足被截断。
+      return new Promise((resolve) => {
+        requestAnimationFrame(() => {
+          window.setTimeout(() => resolve({ ...savedPosition, behavior: 'auto' }), 60)
+        })
+      })
+    }
+
+    if (to.hash) return { el: to.hash, top: 96, behavior: 'smooth' }
+    return { top: 0, behavior: 'auto' }
   },
 })
 
