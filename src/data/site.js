@@ -482,6 +482,7 @@ export const footer = {
         { label: '产品与解决方案', to: '/products' },
         { label: '行业应用', to: '/industries' },
         { label: '洞察', to: '/insights' },
+        { label: '能力看板', to: '/showcase' },
         { label: '常见问题', to: '/faq' },
       ],
     },

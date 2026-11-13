@@ -4,6 +4,8 @@
 
 技术栈：Vue 3 · Vite 6 · Vue Router 4 · Element Plus（`unplugin-auto-import` + `unplugin-vue-components` 按需引入，`zh-cn` 语言包，主题变量跟随站点深浅色）。
 
+`/showcase` 能力看板集中展示项目交付状态，可作为后续业务页面的参考实现，复制 [ShowcaseView.vue](src/views/ShowcaseView.vue) 后替换数据即可改造。
+
 ## 本地运行
 
 ```bash

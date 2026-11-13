@@ -89,6 +89,16 @@ const routes = [
     },
   },
   {
+    path: '/showcase',
+    name: 'showcase',
+    component: () => import('@/views/ShowcaseView.vue'),
+    meta: {
+      title: '能力看板',
+      description:
+        '把设备接入与数据链路项目的负责人、交付进度、上线计划与风险节点放在同一张看板上，便于持续跟进现场交付。',
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/views/NotFoundView.vue'),
